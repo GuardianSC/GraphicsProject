@@ -6,10 +6,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crenderutilscpp.cpp">
+    <ClCompile Include="Window.cpp">
       <Filter>Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
+    <ClCompile Include="crenderutils.cpp">
       <Filter>Files</Filter>
     </ClCompile>
   </ItemGroup>
