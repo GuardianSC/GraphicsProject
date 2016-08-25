@@ -17,6 +17,7 @@ bool Window::init(int a_width, int a_height, char * a_title)
 	glfwMakeContextCurrent(winHandle);
 	isInitialized = true;
 	glewExperimental = true;
+	glewInit();
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	return true;
 }
