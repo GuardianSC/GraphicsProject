@@ -9,7 +9,7 @@ struct Geometry
 };
 
 // (forward declaring Vertex instead of using #include "Vertex.h", vertex size, number of tris, size of tris)
-Geometry makeGeometry(struct Vertex *verts, size_t vsize, const unsigned int *tris, size_t tsize); 
+Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned int *tris, size_t tsize); 
 
 void freeGeometry(Geometry &);
 
@@ -21,3 +21,5 @@ struct Shader
 Shader makeShader(const char *vsource, const char *fsource);
 
 void freeShader(Shader &shader);
+
+void draw(const Shader &shader, const Geometry &geometry);

@@ -18,7 +18,7 @@ bool Window::init(int a_width, int a_height, char * a_title)
 	isInitialized = true;
 	glewExperimental = true;
 	glewInit();
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Default background color
 	return true;
 }
 
@@ -26,9 +26,10 @@ bool Window::step()
 {
 	if (!isInitialized) 
 		return false;
-	glClear(GL_COLOR_BUFFER_BIT);
+	
 	glfwPollEvents();
 	glfwSwapBuffers(winHandle);
+	glClear(GL_COLOR_BUFFER_BIT);
 	return !glfwWindowShouldClose(winHandle);
 }
 

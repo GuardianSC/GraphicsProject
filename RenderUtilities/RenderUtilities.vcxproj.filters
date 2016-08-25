@@ -23,5 +23,8 @@
     <ClInclude Include="Vertex.h">
       <Filter>Files</Filter>
     </ClInclude>
+    <ClInclude Include="gldecs.h">
+      <Filter>Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,16 +3,16 @@
 #include "crenderutils.h"
 #include "Vertex.h"
 
-Geometry makeGeometry(Vertex * verts, size_t vsize, const unsigned int * tris, size_t tsize)
+Geometry makeGeometry(const Vertex * verts, const size_t vsize, const unsigned int * tris, size_t tsize)
 {
 	Geometry retval;
 	retval.size = tsize;
 	// Define, manually scope, initialize, and then unscope the variables
 
 	// Define
-	glCreateBuffers(1, &retval.vbo); // store vertices
-	glCreateBuffers(1, &retval.ibo); // store indices
-	glCreateVertexArrays(1, &retval.vao); // store attribute information (inside the vertex struct)
+	glGenBuffers(1, &retval.vbo); // store vertices
+	glGenBuffers(1, &retval.ibo); // store indices
+	glGenVertexArrays(1, &retval.vao); // store attribute information (inside the vertex struct)
 
 	// Scope
 	glBindVertexArray(retval.vao); // binds the only active buffer (only one buffer can be active at a time)
@@ -26,14 +26,15 @@ Geometry makeGeometry(Vertex * verts, size_t vsize, const unsigned int * tris, s
 	// Attributes
 	glEnableVertexAttribArray(0); // position
 	glEnableVertexAttribArray(1); // color
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0); // position
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void *)16); // color
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::POSITION); // position
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::COLOR); // color
 	// Unscope
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	return Geometry();
+	return retval;
 }
 
 void freeGeometry(Geometry &geo)
@@ -72,4 +73,14 @@ void freeShader(Shader &shader)
 {
 	glDeleteProgram(shader.handle);
 	shader.handle = 0;
+}
+
+void draw(const Shader &shader, const Geometry &geometry)
+{
+	glUseProgram(shader.handle);
+	// binding VAO also binds IBO(tri) and VBO (verts)
+	glBindVertexArray(geometry.vao);
+	// draw elements will draw vertices that are currently bound using an array of indices.
+	// IF IBO IS BOUND, indices don't need ot be provided
+	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }
