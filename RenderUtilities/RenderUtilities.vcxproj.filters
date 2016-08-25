@@ -20,5 +20,8 @@
     <ClInclude Include="Window.h">
       <Filter>Files</Filter>
     </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
