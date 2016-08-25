@@ -2,17 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Files">
-      <UniqueIdentifier>{9d6e75ec-85d8-4866-ac02-254b06edbd83}</UniqueIdentifier>
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crenderutilscpp.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="crenderutils.h">
-      <Filter>Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
