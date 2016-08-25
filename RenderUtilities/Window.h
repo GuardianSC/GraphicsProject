@@ -5,15 +5,16 @@
 class Window
 {
 private:
-	int width, height;
-	char title[64];
+	int width = 1650;
+	int height = 400;
+	char title[64] = "Window";
 	bool isInitialized = false;
 
 	// Forward declaration
-	class GLFWwindow *winHandle /* = nullptr*/;
+	struct GLFWwindow *winHandle /* = nullptr*/;
 
 public:
-	bool init(int a_width, int a_height, char *a_title); // initialize
+	bool init(int a_width = 1350, int a_height = 800, char *a_title = "Window"); // initialize
 	bool step(); // update
 	bool term(); // terminate
 };
