@@ -9,9 +9,15 @@
     <ClCompile Include="crenderutilscpp.cpp">
       <Filter>Files</Filter>
     </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crenderutils.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
       <Filter>Files</Filter>
     </ClInclude>
   </ItemGroup>
