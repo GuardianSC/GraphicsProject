@@ -6,6 +6,7 @@
 #include "Vertex.h"
 #include <fstream>
 #include <string>
+#include <iostream>
 Geometry makeGeometry(const Vertex * verts, const size_t vsize, const unsigned int * tris, size_t tsize)
 {
 	Geometry retval;
@@ -72,6 +73,38 @@ Shader makeShader(const char *vsource, const char *fsource)
 	return retval;
 }
 
+char* getStringFromFile(const char* path) {
+
+	int array_size = 5012;
+	char * array = new char[array_size];
+	int position = 0;
+
+	std::fstream fin(path);
+
+	if (fin.is_open()) {
+#ifdef _DEBUG
+		std::string successfulMessage = "Opened the file at ";
+		std::cout << successfulMessage.append(path) << std::endl;
+#endif
+		while (!fin.eof() && position < array_size) {
+			fin.get(array[position]);
+			position++;
+		}
+		array[position - 1] = '\0';
+
+#ifdef _DEBUG
+		for (int i = 0; array[i] != '\0'; i++)
+			std::cout << array[i];
+#endif
+	}
+	else {
+		std::cout << "File was not opened";
+		return nullptr;
+	}
+
+	return array;
+}
+
 std::string getTextFromFile(const char *path)
 {
 	/*std::ifstream file;
@@ -94,9 +127,9 @@ std::string getTextFromFile(const char *path)
 
 Shader loadShader(const char *vpath, const char *fpath) 
 {
-	getTextFromFile(vpath);
-	getTextFromFile(fpath);
-	return makeShader(vpath, fpath);
+	char* v = getStringFromFile(vpath);
+	char* f = getStringFromFile(fpath);
+	return makeShader(v, f);
 }
 
 Geometry loadOBJ(const char *path)
@@ -106,30 +139,29 @@ Geometry loadOBJ(const char *path)
 	// create an array to store those postions and data
 	
 	// tiny obj stuff (required to work)
-	std::string inputfile = "cornell_box.obj";
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string err;
-	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, inputfile.c_str());
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
 
 	// our data stuff
 	Vertex * verts = new Vertex[attrib.vertices.size() / 3];
 	unsigned * tris = new unsigned[shapes[0].mesh.indices.size()];
 	shapes[0].mesh.indices;
 
-	for (int i = 0; i < attrib.vertices.size(); ++i)
+	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
 	{
 		verts[i] = { attrib.vertices[i * 3], 
 					 attrib.vertices[i * 3 + 1], 
-					 attrib.vertices[i + * 3 + 2], 
+					 attrib.vertices[i * 3 + 2], 
 					 1 };
 	}
 
-	for (int i = 0; i < shapes[0].mesh.indices.size() / 3, tris, shapes[0].mesh.indices.size())
+	for (int i = 0; i < shapes[0].mesh.indices.size() / 3; ++i) {
 		tris[i] = shapes[0].mesh.indices[i].vertex_index;
-
-	Geometry retval = makeGeometry(verts, attrib.vertices.size() / 3, tris, tricount);
+	}
+	Geometry retval = makeGeometry(verts, attrib.vertices.size() / 3, tris, shapes[0].mesh.indices.size());
 
 	return retval;
 }
