@@ -1,0 +1,16 @@
+#version 150
+
+in vec4 vColor;
+out vec4 outColor;
+
+void main () 
+{
+	// One's Compliment
+	// 1 - val = One's Compliment
+	outColor = vec4(1, 1, 1, 1) - vColor; // (1, 0, 0, 1)
+
+	//outColor.r = vPosition.x;
+	outColor.r = abs(cos(vPosition.x*100));
+
+	outColor.g = abs(cos(vPosition.y*100));
+};
