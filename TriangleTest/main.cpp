@@ -2,7 +2,7 @@
 #include "Vertex.h"
 #include "crenderutils.h"
 
-// Welcome to the development (triangle-feature) branch!
+// Welcome to the main development branch!
 
 int main()
 {
