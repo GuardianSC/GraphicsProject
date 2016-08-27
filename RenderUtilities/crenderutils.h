@@ -27,3 +27,5 @@ Geometry loadOBJ(const char *path);
 void freeShader(Shader &shader);
 
 void draw(const Shader &shader, const Geometry &geometry);
+
+void draw(const Shader &, const Geometry &, float time);

@@ -1,14 +1,19 @@
 #include "Window.h"
 #include "Vertex.h"
 #include "crenderutils.h"
+#include "gallery.h"
 
 // Welcome to the main development branch!
 
 int main()
 {
 	Window window;
-	window.init();
-	// clip space coordinates, go from -1, 1
+	Gallery gallery;
+
+	window.init(600, 600);
+	gallery.init();
+
+	/* clip space coordinates, go from -1, 1
 	//Vertex vert[6] = { 
 	//	// First, larger triangle
 	//	{ 0,     .5f, 0, 1, 1, 0, 0, 1 },
@@ -22,7 +27,7 @@ int main()
 
 	//unsigned tris[6] = { 0, 1, 2, 3, 4, 5 };
 
-	const char vsource[] = 
+	/*const char vsource[] = 
 		"#version 330\n"
 		"layout(location = 0)in vec4 position;"
 		"layout(location = 1)in vec4 color;"
@@ -36,18 +41,28 @@ int main()
 		"void main () { outColor = vColor; } ";
 
 	//Geometry geometry1 = makeGeometry(vert, 6, tris, 6);
-	Shader shader1 = makeShader(vsource, fsource);
+	//Shader shader1 = makeShader(vsource, fsource);
 
-	Shader shader = loadShader("../res/Shaders/simpleVert.txt", "../res/Shaders/simpleFrag.txt");
+	//Shader shader = loadShader("../res/Shaders/simpleVert.txt", "../res/Shaders/simpleFrag.txt");
 
-	Geometry geometry = loadOBJ("../res/Models/sphere.obj");
+	Geometry geometry = loadOBJ("../res/Models/sphere.obj");*/
 	
+	gallery.loadShader("SHADER", "../res/shaders/simpleVert.txt", "../res/shaders/simpleFrag.txt");
+
+	//gallery.loadObjectOBJ("SPHERE", "../res/models/sphere.obj");
+	gallery.loadObjectOBJ("PANDA", "../res/models/Panda 1.obj");
+	//gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
+
+	float time = 0;
+
 	while (window.step())
 	{
-		draw(shader, geometry);
+		time += 0.1667f;
+		//draw(gallery.getShader("SHADER"), gallery.getObject("SPHERE"), time);
+		draw(gallery.getShader("SHADER"), gallery.getObject("PANDA"), time);
+		//draw(gallery.getShader("SHADER"), gallery.getObject("CUBE"), time);
 	}
-	freeGeometry(geometry);
-	freeShader(shader);
+	gallery.term();
 	window.term();
 	return 0;
 }

@@ -12,6 +12,9 @@
     <ClCompile Include="crenderutils.cpp">
       <Filter>Files</Filter>
     </ClCompile>
+    <ClCompile Include="gallery.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crenderutils.h">
@@ -24,6 +27,9 @@
       <Filter>Files</Filter>
     </ClInclude>
     <ClInclude Include="gldecs.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gallery.h">
       <Filter>Files</Filter>
     </ClInclude>
   </ItemGroup>

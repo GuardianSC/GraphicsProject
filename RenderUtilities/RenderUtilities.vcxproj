@@ -127,10 +127,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="crenderutils.cpp" />
+    <ClCompile Include="gallery.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crenderutils.h" />
+    <ClInclude Include="gallery.h" />
     <ClInclude Include="gldecs.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
