@@ -1,0 +1,26 @@
+#version 330
+
+// locations are the 'attributes' from the vertex
+// "in" keyword brings data in from the previous
+
+layout(location = 0)in vec4 position;
+layout(location = 1)in vec4 color;
+
+uniform float time = 0.0f;
+
+// out sends data to the next step of the pipeline
+out vec4 vColor;
+out vec4 vPosition;
+
+void main()
+{
+	vColor = color;
+	vPosition = position;
+	gl_Position = position;
+
+	//gl_Position.x += tan(sin(time + position.x))  / 2;
+	//gl_Position.y += cos(tan(sin(time + position.x))) / 2;
+	//gl_Position.w += sin(cos(tan(time + position.w))) / 2;
+	//gl_Position.z = ((gl_Position.z + 1) / 2) * time;
+	//gl_Position.w = 10;
+}
