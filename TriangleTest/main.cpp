@@ -3,7 +3,7 @@
 #include "crenderutils.h"
 #include "gallery.h"
 
-// Welcome to the main development branch!
+// Welcome to the file-feature development branch!
 
 int main()
 {
@@ -50,8 +50,8 @@ int main()
 	gallery.loadShader("SHADER", "../res/shaders/simpleVert.txt", "../res/shaders/simpleFrag.txt");
 
 	//gallery.loadObjectOBJ("SPHERE", "../res/models/sphere.obj");
-	gallery.loadObjectOBJ("PANDA", "../res/models/Panda 1.obj");
-	//gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
+	//gallery.loadObjectOBJ("PANDA", "../res/models/Panda 1.obj");
+	gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
 
 	float time = 0;
 
@@ -59,8 +59,8 @@ int main()
 	{
 		time += 0.1667f;
 		//draw(gallery.getShader("SHADER"), gallery.getObject("SPHERE"), time);
-		draw(gallery.getShader("SHADER"), gallery.getObject("PANDA"), time);
-		//draw(gallery.getShader("SHADER"), gallery.getObject("CUBE"), time);
+		//draw(gallery.getShader("SHADER"), gallery.getObject("PANDA"), time);
+		draw(gallery.getShader("SHADER"), gallery.getObject("CUBE"), time);
 	}
 	gallery.term();
 	window.term();
