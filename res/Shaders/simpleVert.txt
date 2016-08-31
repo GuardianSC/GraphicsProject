@@ -18,9 +18,8 @@ void main()
 	vPosition = position;
 	gl_Position = position;
 
-	//gl_Position.x += tan(sin(time + position.x))  / 2;
-	//gl_Position.y += cos(tan(sin(time + position.x))) / 2;
-	//gl_Position.w += sin(cos(tan(time + position.w))) / 2;
-	//gl_Position.z = ((gl_Position.z + 1) / 2) * time;
+	gl_Position.x += sin(time + position.x)  / 2;
+	gl_Position.w += sin(cos(tan(time + position.w))) / 2;
+	gl_Position.z += ((gl_Position.z + 1) / 2) * time;
 	//gl_Position.w = 10;
 }
