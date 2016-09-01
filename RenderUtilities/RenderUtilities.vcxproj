@@ -126,14 +126,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="crenderutils.cpp" />
     <ClCompile Include="gallery.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="crenderutils.h" />
     <ClInclude Include="gallery.h" />
     <ClInclude Include="gldecs.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

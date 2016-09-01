@@ -55,7 +55,7 @@ int main()
 
 	float time = 0;
 
-	while (window.step())
+	while (window.update())
 	{
 		time += 0.1667f;
 		//draw(gallery.getShader("SHADER"), gallery.getObject("SPHERE"), time);

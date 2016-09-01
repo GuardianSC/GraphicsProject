@@ -1,5 +1,5 @@
 #pragma once
-
+// Stuff for the shader
 struct Vertex
 {
 	float position[4];

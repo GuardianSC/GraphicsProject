@@ -32,8 +32,9 @@ bool Window::init(int a_width, int a_height, char * a_title)
 	isInitialized = true;
 	glewExperimental = true;
 	glewInit();
-	glClearColor(0.75f, 0.33f, 0.33f, 0.5f); // Default background color
+	glClearColor(0, 0, 0, 0); // Default background color
 
+	/// Currently causing abort
 	/*#ifdef _DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -45,7 +46,7 @@ bool Window::init(int a_width, int a_height, char * a_title)
 return true; 
 }
 
-bool Window::step()
+bool Window::update()
 {
 	if (!isInitialized) 
 		return false;

@@ -15,6 +15,15 @@
     <ClCompile Include="gallery.cpp">
       <Filter>Files</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crenderutils.h">
@@ -30,6 +39,15 @@
       <Filter>Files</Filter>
     </ClInclude>
     <ClInclude Include="gallery.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
       <Filter>Files</Filter>
     </ClInclude>
   </ItemGroup>

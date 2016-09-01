@@ -60,7 +60,6 @@ const Geometry &Gallery::getObject(const char * name)
 	return geometries[name];
 }
 
-
 bool Gallery::term()
 {
 	// loop through my maps and call my free functions
