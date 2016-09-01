@@ -18,8 +18,7 @@ int main()
 	gallery.loadShader("CAMERA", "../res/shaders/cameraVert.txt", "../res/shaders/cameraFrag.txt");
 
 	gallery.loadObjectOBJ("SPHERE", "../res/models/sphere.obj");
-	gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
-	//gallery.loadObjectOBJ("PANDA", "../res/models/Panda 1.obj");
+	//gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
 
 	float time = 0;
 
@@ -30,17 +29,16 @@ int main()
 
 	glm::mat4 projection, view, model;
 
-	projection = glm::ortho<float>(-2, 2, -2, 2, -10, 10);
+	projection = glm::ortho<float>(-20, 20, -20, 20, -10, 10);
 	//projection = glm::perspective(45.f, 1.f, .1f, 10.f);
 	model = glm::scale(glm::vec3(1.f, 1.f, 1.f)) * glm::translate(glm::vec3(.5f, .1f, 2.f)), glm::rotate(time, glm::vec3(0, 1, 0));
-	view = glm::lookAt(glm::vec3(0.f, 0.f, 0.f), glm::vec3(5.f, 5.f, 5.f), glm::vec3(0.f, 1.f, 0.f));
+	view = glm::lookAt(glm::vec3(0.f, 0.f, 0.f), glm::vec3(5.f, 5.f, 5.f), glm::vec3(0.f, 1.f, 0.f)); // camera position, position to look at, camera direction
 
 	while (window.step())
 	{
 		time += 0.1667f;
 		draw(gallery.getShader("CAMERA"), gallery.getObject("SPHERE"), glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model));
-		draw(gallery.getShader("CAMERA"), gallery.getObject("CUBE"), glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model));
-		//draw(gallery.getShader("CAMERA"), gallery.getObject("PANDA"), glm::value_ptr(model), glm::value_ptr(view), glm::value_ptr(projection));
+		//draw(gallery.getShader("CAMERA"), gallery.getObject("CUBE"), glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model));
 	}
 	gallery.term();
 	window.term();
