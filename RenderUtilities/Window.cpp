@@ -34,13 +34,13 @@ bool Window::init(int a_width, int a_height, char * a_title)
 	glewInit();
 	glClearColor(0.75f, 0.33f, 0.33f, 0.5f); // Default background color
 
-	#ifdef _DEBUG
+	/*#ifdef _DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
 	glDebugMessageCallback(GL_errorCallback, 0);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, 0, true);
-#endif
+#endif*/
 
 return true; 
 }
@@ -53,6 +53,7 @@ bool Window::step()
 	glfwPollEvents();
 	glfwSwapBuffers(winHandle);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_TEST);
 	return !glfwWindowShouldClose(winHandle);
 }
 

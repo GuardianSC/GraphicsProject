@@ -196,3 +196,19 @@ void draw(const Shader &shader, const Geometry &geometry, float time)
 
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }
+
+void draw(const Shader &shader, const Geometry &geometry, const float P[16], const float M[16], const float  V[16]) // M = Model, V = View, P = Projection
+{
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	glUseProgram(shader.handle);
+
+	glBindVertexArray(geometry.vao);
+
+	glUniformMatrix4fv(0, 1, GL_FALSE, P);
+	glUniformMatrix4fv(1, 1, GL_FALSE, M);
+	glUniformMatrix4fv(2, 1, GL_FALSE, V);
+
+	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
+}
