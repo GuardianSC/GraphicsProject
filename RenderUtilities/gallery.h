@@ -7,7 +7,7 @@ class Gallery
 {
 private:
 	std::map<std::string, Geometry> geometries;
-	std::map<std::string, Shader> shaders;
+	std::map<std::string, Shader>	shaders;
 public:
 	// Make a custom shader
 	bool makeShader(const char *name, const char *vsource, const char *fsource);
