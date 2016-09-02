@@ -2,11 +2,14 @@
 #include "Window.h"
 #include "Input.h"
 #include <cstring>
+#include <cstdio>
 
 bool Input::init(const class Window &window)
 {
 	memset(keys, 0, 350 * sizeof(KEY_STATE));
 	winHandle = window.winHandle;
+	// INITIALIZE THESE FUCKERS
+	mouseX = mouseY = mouseH = mouseV = 0;
 
 	// Sets cursor to be invisible in window
 	//glfwSetInputMode(winHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -15,7 +18,7 @@ bool Input::init(const class Window &window)
 
 bool Input::update()
 {
-	for (int i = 0; i < 250; ++i)
+	for (int i = 0; i < 350; ++i)
 	{
 		int res = glfwGetKey(winHandle, i);
 		//GLFW_PRESS, GLFW_RELEASE
@@ -44,11 +47,12 @@ bool Input::update()
 	mouseH = mouseX - prevX;
 	mouseV = mouseY - prevY;
 	
+	//printf("%f %f\n", mouseX, mouseY);
 
 	return true;
 }
 
 bool Input::term()
 {
-	return false;
+	return true;
 }

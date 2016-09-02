@@ -197,7 +197,7 @@ void draw(const Shader &shader, const Geometry &geometry, float time)
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }
 
-void draw(const Shader &shader, const Geometry &geometry, const float P[16], const float M[16], const float  V[16]) // M = Model, V = View, P = Projection
+void draw(const Shader &shader, const Geometry &geometry, const float P[16], const float M[16], const float  V[16], float time) // M = Model, V = View, P = Projection
 {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);

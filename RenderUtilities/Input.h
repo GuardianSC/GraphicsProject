@@ -14,6 +14,16 @@ public:
 		return keys[key];
 	}
 
+	float getMouseH() const
+	{
+		return mouseH;
+	}
+
+	float getMouseV() const
+	{
+		return mouseV;
+	}
+
 private:
 	struct GLFWwindow *winHandle;
 	KEY_STATE keys[350];

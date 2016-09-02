@@ -31,4 +31,4 @@ void draw(const Shader &shader, const Geometry &geometry);
 
 void draw(const Shader &shader, const Geometry &geometry, float time);
 
-void draw(const Shader &shader, const Geometry &geometry, const float M[16], const float V[16], const float  P[16]); // M = Model, V = View, P = Projection
+void draw(const Shader &shader, const Geometry &geometry, const float M[16], const float V[16], const float  P[16], float time); // M = Model, V = View, P = Projection
