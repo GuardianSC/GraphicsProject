@@ -4,6 +4,7 @@
 bool Time::init()
 {
 	glfwSetTime(0);
+	deltaTime = currentTime = previousTime = 0;
 	return true;
 }
 

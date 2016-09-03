@@ -4,9 +4,13 @@
 #include "OBJ\tiny_obj_loader.h"
 #include "crenderutils.h"
 #include "Vertex.h"
+#include "glObjects.h"
 #include <fstream>
 #include <string>
 #include <iostream>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "STB\stb_image.h"
 Geometry makeGeometry(const Vertex * verts, const size_t vsize, const unsigned int * tris, size_t tsize)
 {
 	Geometry retval;
@@ -148,7 +152,6 @@ Geometry loadOBJ(const char *path)
 	// our data stuff
 	Vertex * verts = new Vertex[attrib.vertices.size() / 3];
 	unsigned * tris = new unsigned[shapes[0].mesh.indices.size()];
-	shapes[0].mesh.indices;
 
 	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
 	{
@@ -161,7 +164,11 @@ Geometry loadOBJ(const char *path)
 	for (int i = 0; i < shapes[0].mesh.indices.size() / 3; ++i) {
 		tris[i] = shapes[0].mesh.indices[i].vertex_index;
 	}
+
 	Geometry retval = makeGeometry(verts, attrib.vertices.size() / 3, tris, shapes[0].mesh.indices.size());
+
+	delete[] verts;
+	delete[] tris;
 
 	return retval;
 }
@@ -197,7 +204,8 @@ void draw(const Shader &shader, const Geometry &geometry, float time)
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }
 
-void draw(const Shader &shader, const Geometry &geometry, const float P[16], const float M[16], const float  V[16], float time) // M = Model, V = View, P = Projection
+// P = Projection, M = Model, V = View,
+void draw(const Shader &shader, const Geometry &geometry, const float P[16], const float V[16], const float  M[16], float time) 
 {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -211,4 +219,76 @@ void draw(const Shader &shader, const Geometry &geometry, const float P[16], con
 	glUniformMatrix4fv(2, 1, GL_FALSE, V);
 
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
+}
+
+void draw(const Shader &shader, const Geometry &geometry, const Texture &texture, const float P[16], const float V[16], const float  M[16], float time) // M = Model, V = View, P = Projection
+{
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	glUseProgram(shader.handle);
+
+	glBindVertexArray(geometry.vao);
+
+	glUniformMatrix4fv(0, 1, GL_FALSE, P);
+	glUniformMatrix4fv(1, 1, GL_FALSE, V);
+	glUniformMatrix4fv(2, 1, GL_FALSE, M);
+	
+	
+	glUniform1f(3, time);
+
+	// Minimum guaranteed is 8
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture.handle);
+	glUniform1i(4, 0);
+
+	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
+}
+
+Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels) 
+{
+	Texture retval = { 0, width, height, format };
+
+	glGenTextures(1, &retval.handle);
+	glBindTexture(GL_TEXTURE_2D, retval.handle);
+
+ 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return retval;
+}
+
+void freeTexture(Texture &texture)
+{
+	glDeleteTextures(1, &texture.handle);
+	texture = { 0, 0, 0, 0 };
+}
+
+Texture loadTexture(const char *path)
+{
+	int w, h, f;
+	unsigned char *p;
+
+	Texture retval = {0, 0, 0, 0};
+
+	stbi_set_flip_vertically_on_load(true);
+	p = stbi_load(path, &w, &h, &f, STBI_default);
+
+	if (!p) return retval;
+
+	switch (f)
+	{
+	case STBI_grey: f = GL_RED; break;
+	case STBI_grey_alpha: f = GL_RG; break;
+	case STBI_rgb: f = GL_RGB; break;
+	case STBI_rgb_alpha: f = GL_RGBA; break;
+	}
+
+	retval = makeTexture(w, h, f, p);
+	stbi_image_free(p);
+	return retval;
 }

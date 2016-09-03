@@ -1,22 +1,11 @@
 #pragma once
-
-struct Geometry
-{
-	unsigned vbo, ibo, vao, size;
-	// Vertex Buffer Object : an array of vertices
-	// Index Buffer Object : an array of indices (triangles)
-	// Vertex array Object : groups the two above with some formatting
-};
+#include "glObjects.h"
 
 // (Below: forward declaring Vertex instead of using #include "Vertex.h", vertex size, number of tris, size of tris)
 Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned int *tris, size_t tsize); 
 // Free (unload) geometric objects
 void freeGeometry(Geometry &);
 
-struct Shader
-{
-	unsigned handle;
-};
 // Make a custom shader
 Shader makeShader(const char *vsource, const char *fsource);
 // Load a custom shader
@@ -31,4 +20,15 @@ void draw(const Shader &shader, const Geometry &geometry);
 
 void draw(const Shader &shader, const Geometry &geometry, float time);
 
-void draw(const Shader &shader, const Geometry &geometry, const float M[16], const float V[16], const float  P[16], float time); // M = Model, V = View, P = Projection
+// @TODO: chris pls add details
+// M = Model, V = View, P = Projection
+void draw(const Shader &shader, const Geometry &geometry, const float P[16], const float V[16], const float  M[16], float time); 
+
+// Texture Draw
+void draw(const Shader &shader, const Geometry &geometry, const class Texture &texture, const float P[16], const float V[16], const float  M[16], float time);
+// Color depth -- 24-bit colors vs 32-bit colors vs 8-bit colors
+class Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels);
+
+class Texture loadTexture(const char *path);
+
+void freeTexture(Texture &texture);

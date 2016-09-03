@@ -46,12 +46,6 @@ void FlyCamera::update(const Input &input, const Time &time)
 	yaw -= input.getMouseH() * time.getDeltaTime() * 100;
 	pitch -= input.getMouseV() * time.getDeltaTime() * 100;
 
-	/*direction.x = cos(yaw) * sin(pitch);
-	direction.y = cos(yaw);
-	direction.z = sin(yaw) * sin(pitch);*/
-
-	 
-
 	if (glm::length(moveDir) >= .7f)
 	{
 		moveDir = glm::normalize(moveDir);

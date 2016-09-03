@@ -8,7 +8,7 @@ bool Input::init(const class Window &window)
 {
 	memset(keys, 0, 350 * sizeof(KEY_STATE));
 	winHandle = window.winHandle;
-	// INITIALIZE THESE FUCKERS
+	// INITIALIZE ALL THE THINGS
 	mouseX = mouseY = mouseH = mouseV = 0;
 
 	// Sets cursor to be invisible in window

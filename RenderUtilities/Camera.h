@@ -24,7 +24,7 @@ public:
 	void update(const class Input &input, const class Time &time);
 
 	// Look at a specific position(target)
-	void lookAt(const glm::vec3 target) { direction = glm::normalize(target - position); }
+	void lookAt(const glm::vec3 target) { direction = normalize(target - position); }
 
 	// Jump the camera to a location
 	void jumpTo(const glm::vec3 &location) { position = location; }

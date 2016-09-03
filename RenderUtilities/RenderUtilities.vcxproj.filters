@@ -50,5 +50,8 @@
     <ClInclude Include="Timer.h">
       <Filter>Files</Filter>
     </ClInclude>
+    <ClInclude Include="glObjects.h">
+      <Filter>Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
