@@ -24,7 +24,7 @@ void main()
 
 	
 	
-	//gl_Position = Projection * View * position;
+	gl_Position = Projection * View * Model * position;
 	
-	gl_Position = position;
+	//gl_Position = position;
 }

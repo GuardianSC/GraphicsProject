@@ -4,9 +4,9 @@ class Window
 {
 private:
 	friend class Input;
-	int width = 1650;
-	int height = 400;
-	char title[64] = "Grand Theft Walrus: The ThirtyFirth"; // Default title
+	int width;
+	int height;
+	char title[64];
 	bool isInitialized = false;
 
 	// Forward declaration

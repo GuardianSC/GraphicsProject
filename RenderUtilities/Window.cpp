@@ -34,8 +34,7 @@ bool Window::init(int a_width, int a_height, char * a_title)
 	glewInit();
 	glClearColor(.5f, .0f, .75f, .65f); // Default background color
 
-	/// Currently causing abort
-	#ifdef _DEBUG
+#ifdef _DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
@@ -48,8 +47,7 @@ bool Window::init(int a_width, int a_height, char * a_title)
 
 bool Window::update()
 {
-	if (!isInitialized) 
-		return false;
+	if (!isInitialized) return false;
 	
 	glfwPollEvents();
 	glfwSwapBuffers(winHandle);

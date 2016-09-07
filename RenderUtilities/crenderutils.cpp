@@ -26,24 +26,33 @@ Geometry loadOBJ(const char *path)
 	std::string err;
 	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
 
+	assert(ret && "Failed to load OBJ file!");
+
 	// our data stuff
 	Vertex * verts = new Vertex[attrib.vertices.size() / 3];
 	unsigned * tris = new unsigned[shapes[0].mesh.indices.size()];
 
 	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
 	{
-		verts[i] = { attrib.vertices[i * 3],
+		verts[i] =
+		{
+			attrib.vertices[i * 3],
 			attrib.vertices[i * 3 + 1],
 			attrib.vertices[i * 3 + 2],
-			1 };
+			1
+		};
 
+		assert(i <= attrib.vertices.size() / 3);
+
+		//@TODO: look into dis
 		verts[i].color[0] = rand() * 1.0f / RAND_MAX;
 		verts[i].color[1] = rand() * 1.0f / RAND_MAX;
 		verts[i].color[2] = rand() * 1.0f / RAND_MAX;
 		verts[i].color[3] = 1;
 	}
 
-	for (int i = 0; i < shapes[0].mesh.indices.size() / 3; ++i) {
+	for (int i = 0; i < shapes[0].mesh.indices.size(); ++i)
+	{
 		tris[i] = shapes[0].mesh.indices[i].vertex_index;
 	}
 

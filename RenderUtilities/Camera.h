@@ -5,7 +5,7 @@
 
 class FlyCamera
 {
-	glm::vec3 position = (glm::vec3(5, 5, 5)); // Camera position
+	glm::vec3 position; // Camera position
 	glm::vec3 direction; // Direction camera is facing
 
 	glm::mat4 transform; // Camera's transform
@@ -13,8 +13,8 @@ class FlyCamera
 	// yaw is along the Y axis, pitch is along the X axis, roll is along the Z axis
 	float yaw, pitch, roll;
 
-	float aspect, fov, near, far; 
-					// near must be greater than 0
+	float aspect, fov, near, far; // near must be greater than 0
+					
 	float speed;
 public:
 	// Default constructor
