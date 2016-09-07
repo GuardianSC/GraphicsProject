@@ -5,12 +5,56 @@
 #include "crenderutils.h"
 #include "Vertex.h"
 #include "glObjects.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "STB\stb_image.h"
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <random>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "STB\stb_image.h"
+
+Geometry loadOBJ(const char *path)
+{
+	// Use tiny obj to load the file, 
+	//extract vertex positions/face data,
+	// create an array to store those postions and data
+
+	// tiny obj stuff (required to work)
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string err;
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
+
+	// our data stuff
+	Vertex * verts = new Vertex[attrib.vertices.size() / 3];
+	unsigned * tris = new unsigned[shapes[0].mesh.indices.size()];
+
+	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
+	{
+		verts[i] = { attrib.vertices[i * 3],
+			attrib.vertices[i * 3 + 1],
+			attrib.vertices[i * 3 + 2],
+			1 };
+
+		verts[i].color[0] = rand() * 1.0f / RAND_MAX;
+		verts[i].color[1] = rand() * 1.0f / RAND_MAX;
+		verts[i].color[2] = rand() * 1.0f / RAND_MAX;
+		verts[i].color[3] = 1;
+	}
+
+	for (int i = 0; i < shapes[0].mesh.indices.size() / 3; ++i) {
+		tris[i] = shapes[0].mesh.indices[i].vertex_index;
+	}
+
+	Geometry retval = makeGeometry(verts, attrib.vertices.size() / 3, tris, shapes[0].mesh.indices.size());
+
+	delete[] verts;
+	delete[] tris;
+
+	return retval;
+}
+
 Geometry makeGeometry(const Vertex * verts, const size_t vsize, const unsigned int * tris, size_t tsize)
 {
 	Geometry retval;
@@ -109,68 +153,11 @@ char* getStringFromFile(const char* path) {
 	return array;
 }
 
-std::string getTextFromFile(const char *path)
-{
-	/*std::ifstream file;
-	std::string fileContent[100];
-	file.open(fileName, std::ios_base::in | std::ios_base::_Nocreate);
-	
-	if (file.is_open())
-		for (int i = 0; i < 5; i++)
-			file >> fileContent[i];
-
-	file.close();
-
-	return fileContent[100];*/
-
-	std::ifstream file{ "file.txt" };
-	std::string fileContents{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
-
-	return fileContents;
-}
-
 Shader loadShader(const char *vpath, const char *fpath) 
 {
 	char* v = getStringFromFile(vpath);
 	char* f = getStringFromFile(fpath);
 	return makeShader(v, f);
-}
-
-Geometry loadOBJ(const char *path)
-{
-	// Use tiny obj to load the file, 
-	//extract vertex positions/face data,
-	// create an array to store those postions and data
-	
-	// tiny obj stuff (required to work)
-	tinyobj::attrib_t attrib;
-	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> materials;
-	std::string err;
-	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
-
-	// our data stuff
-	Vertex * verts = new Vertex[attrib.vertices.size() / 3];
-	unsigned * tris = new unsigned[shapes[0].mesh.indices.size()];
-
-	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
-	{
-		verts[i] = { attrib.vertices[i * 3], 
-					 attrib.vertices[i * 3 + 1], 
-					 attrib.vertices[i * 3 + 2], 
-					 1 };
-	}
-
-	for (int i = 0; i < shapes[0].mesh.indices.size() / 3; ++i) {
-		tris[i] = shapes[0].mesh.indices[i].vertex_index;
-	}
-
-	Geometry retval = makeGeometry(verts, attrib.vertices.size() / 3, tris, shapes[0].mesh.indices.size());
-
-	delete[] verts;
-	delete[] tris;
-
-	return retval;
 }
 
 void freeShader(Shader &shader)

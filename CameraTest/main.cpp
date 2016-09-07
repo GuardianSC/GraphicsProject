@@ -30,9 +30,7 @@ int main()
 
 	unsigned tris[] = { 0,1,2, 2,3,0 };
 
-
 	// Loading shader(s)
-	//gallery.loadShader("CAMERA", "../res/shaders/cameraVert.txt", "../res/Shaders/cameraFrag.txt");
 	gallery.loadShader("TEXTURE", "../res/Shaders/texVert.txt", "../res/Shaders/texFrag.txt");
 
 	// Loading object(s)

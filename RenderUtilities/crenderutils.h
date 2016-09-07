@@ -1,6 +1,9 @@
 #pragma once
 #include "glObjects.h"
 
+// Load an existing object
+Geometry loadOBJ(const char *path);
+
 // (Below: forward declaring Vertex instead of using #include "Vertex.h", vertex size, number of tris, size of tris)
 Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned int *tris, size_t tsize); 
 // Free (unload) geometric objects
@@ -10,10 +13,13 @@ void freeGeometry(Geometry &);
 Shader makeShader(const char *vsource, const char *fsource);
 // Load a custom shader
 Shader loadShader(const char *vpath, const char *fpath);
-// Load an existing object
-Geometry loadOBJ(const char *path);
+
 // Free (unload) shaders
 void freeShader(Shader &shader);
+
+class Texture loadTexture(const char *path);
+
+void freeTexture(Texture &texture);
 
 // Different draw functions
 void draw(const Shader &shader, const Geometry &geometry);
@@ -21,7 +27,7 @@ void draw(const Shader &shader, const Geometry &geometry);
 void draw(const Shader &shader, const Geometry &geometry, float time);
 
 // @TODO: chris pls add details
-// M = Model, V = View, P = Projection
+// P = Projection, V = View, M = Model
 void draw(const Shader &shader, const Geometry &geometry, const float P[16], const float V[16], const float  M[16], float time); 
 
 // Texture Draw
@@ -29,6 +35,3 @@ void draw(const Shader &shader, const Geometry &geometry, const class Texture &t
 // Color depth -- 24-bit colors vs 32-bit colors vs 8-bit colors
 class Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels);
 
-class Texture loadTexture(const char *path);
-
-void freeTexture(Texture &texture);
