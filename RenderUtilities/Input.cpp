@@ -9,7 +9,6 @@ bool Input::init(const class Window &window)
 	memset(keys, 0, sizeof(keys));
 	winHandle = window.winHandle;
 	
-
 	// Sets cursor to be invisible in window
 	glfwSetInputMode(winHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 

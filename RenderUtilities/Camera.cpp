@@ -9,11 +9,10 @@ void FlyCamera::update(const Input &input, const Time &time)
 	yaw -= input.getMouseH() / 200.f;
 	pitch -= input.getMouseV() / 200.f;
 
-	pitch = glm::clamp<float>(pitch, -glm::pi<float>() / 2 + 0.0001f,
-									  glm::pi<float>() / 2 - 0.0001f);
+	pitch = glm::clamp<float>(pitch, -glm::pi<float>() / 2 + 0.0001f, glm::pi<float>() / 2 - 0.0001f);
 	
 	glm::mat4 &view = transform;
-	view = glm::rotate(yaw, glm::vec3(0, 1, 0)) ;
+	view = glm::rotate(yaw, glm::vec3(0, 1, 0));
 	view = glm::rotate(pitch, glm::vec3(view[0])) * view;
 	view = glm::rotate(roll, glm::vec3(view[2])) * view;
 

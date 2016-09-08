@@ -24,6 +24,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Files</Filter>
     </ClCompile>
+    <ClCompile Include="procGen.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crenderutils.h">
@@ -51,6 +54,9 @@
       <Filter>Files</Filter>
     </ClInclude>
     <ClInclude Include="glObjects.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="procGen.h">
       <Filter>Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,7 +17,9 @@ Shader loadShader(const char *vpath, const char *fpath);
 // Free (unload) shaders
 void freeShader(Shader &shader);
 
-class Texture loadTexture(const char *path);
+Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels);
+Texture makeTextureF(unsigned square, const float *pixels);
+Texture loadTexture(const char *path);
 
 void freeTexture(Texture &texture);
 
@@ -33,5 +35,4 @@ void draw(const Shader &shader, const Geometry &geometry, const float P[16], con
 // Texture Draw
 void draw(const Shader &shader, const Geometry &geometry, const class Texture &texture, const float P[16], const float V[16], const float  M[16], float time);
 // Color depth -- 24-bit colors vs 32-bit colors vs 8-bit colors
-class Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels);
 

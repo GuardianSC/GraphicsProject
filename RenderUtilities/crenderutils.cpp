@@ -16,8 +16,8 @@
 Geometry loadOBJ(const char *path)
 {
 	// Use tiny obj to load the file, 
-	//extract vertex positions/face data,
-	// create an array to store those postions and data
+	// Extract vertex positions/face data,
+	// Create an array to store those postions and data
 
 	// tiny obj stuff (required to work)
 	tinyobj::attrib_t attrib;
@@ -34,7 +34,7 @@ Geometry loadOBJ(const char *path)
 
 	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
 	{
-		verts[i] =
+		verts[i].position =
 		{
 			attrib.vertices[i * 3],
 			attrib.vertices[i * 3 + 1],
@@ -90,6 +90,8 @@ Geometry makeGeometry(const Vertex * verts, const size_t vsize, const unsigned i
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::POSITION); // position
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::COLOR); // color
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::NORMAL); // position
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::TEXCOORD); // color
 	// Unscope
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -175,6 +177,71 @@ void freeShader(Shader &shader)
 	shader.handle = 0;
 }
 
+Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels)
+{
+	Texture retval = { 0, width, height, format };
+
+	glGenTextures(1, &retval.handle);
+	glBindTexture(GL_TEXTURE_2D, retval.handle);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return retval;
+}
+
+Texture makeTextureF(unsigned square, const float * pixels)
+{
+	Texture retval = { 0, square, square, GL_RED };
+
+	glGenTextures(1, &retval.handle);
+	glBindTexture(GL_TEXTURE_2D, retval.handle);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, square, square, 0, GL_RED, GL_FLOAT, pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return retval;
+}
+
+Texture loadTexture(const char *path)
+{
+	int w, h, f;
+	unsigned char *p;
+
+	Texture retval = { 0, 0, 0, 0 };
+
+	stbi_set_flip_vertically_on_load(true);
+	p = stbi_load(path, &w, &h, &f, STBI_default);
+
+	if (!p) return retval;
+
+	switch (f)
+	{
+	case STBI_grey: f = GL_RED; break;
+	case STBI_grey_alpha: f = GL_RG; break;
+	case STBI_rgb: f = GL_RGB; break;
+	case STBI_rgb_alpha: f = GL_RGBA; break;
+	}
+
+	retval = makeTexture(w, h, f, p);
+	stbi_image_free(p);
+	return retval;
+}
+
+void freeTexture(Texture &texture)
+{
+	glDeleteTextures(1, &texture.handle);
+	texture = { 0, 0, 0, 0 };
+}
+
 void draw(const Shader &shader, const Geometry &geometry)
 {
 	glUseProgram(shader.handle);
@@ -239,52 +306,4 @@ void draw(const Shader &shader, const Geometry &geometry, const Texture &texture
 	glUniform1i(4, 0);
 
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
-}
-
-Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels) 
-{
-	Texture retval = { 0, width, height, format };
-
-	glGenTextures(1, &retval.handle);
-	glBindTexture(GL_TEXTURE_2D, retval.handle);
-
- 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	return retval;
-}
-
-void freeTexture(Texture &texture)
-{
-	glDeleteTextures(1, &texture.handle);
-	texture = { 0, 0, 0, 0 };
-}
-
-Texture loadTexture(const char *path)
-{
-	int w, h, f;
-	unsigned char *p;
-
-	Texture retval = {0, 0, 0, 0};
-
-	stbi_set_flip_vertically_on_load(true);
-	p = stbi_load(path, &w, &h, &f, STBI_default);
-
-	if (!p) return retval;
-
-	switch (f)
-	{
-	case STBI_grey: f = GL_RED; break;
-	case STBI_grey_alpha: f = GL_RG; break;
-	case STBI_rgb: f = GL_RGB; break;
-	case STBI_rgb_alpha: f = GL_RGBA; break;
-	}
-
-	retval = makeTexture(w, h, f, p);
-	stbi_image_free(p);
-	return retval;
 }

@@ -1,30 +1,25 @@
 #version 430
 
-// locations are the 'attributes' from the vertex
-// "in" keyword brings data in from the previous
 
 layout(location = 0) in vec4 position;
-layout(location = 1) in vec4 color;
+layout(location = 3) in vec2 texcoord;
 
-// out sends data to the next step of the pipeline
-out vec4 vColor;
-out vec4 vPosition;
+out vec2 vtexCoord;
 
-// uniform layout(location)s are different than the layout(location)s above
-layout(location = 0) uniform mat4 Projection;
-layout(location = 1) uniform mat4 View;
-layout(location = 2) uniform mat4 Model;
-layout(location = 3) uniform float time = 0.0;
+layout(location = 0) uniform mat4 Projection;	
+layout(location = 1) uniform mat4 View;		
+layout(location = 2) uniform mat4 Model;	
+layout(location = 3) uniform float time;
 layout(location = 4) uniform sampler2D texMap;
+
 
 void main()
 {
-	vColor = color;
-	vPosition = position; // Model space
+	vtexCoord = texcoord;
 
-	
-	
-	gl_Position = Projection * View * Model * position;
-	
-	//gl_Position = position;
+	vec4 p = position;
+
+	p.y = texture(texMap, texcoord).b;
+
+	gl_Position = Projection * View * Model * p;
 }
