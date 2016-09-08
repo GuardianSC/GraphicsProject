@@ -14,12 +14,12 @@ class FlyCamera
 	float yaw, pitch, roll;
 
 	float aspect, fov, near, far; // near must be greater than 0
-					
+	
 	float speed;
 public:
 	// Default constructor
-	FlyCamera(float aspect = 16.f/9.f, float fov = 45.f, float near = 1.f, float far = 100.f) 
-		: aspect(aspect), fov(fov), near(near), far(far), direction(0, 0, 1), speed(20), yaw(0), pitch(0), roll(0) {}
+	FlyCamera(float a_aspect = 16.f / 9.f, float a_fov = 45.f, float a_near = 1.f, float a_far = 100.f)
+		: aspect(a_aspect), fov(a_fov), near(a_near), far(a_far), direction(0, 0, 1), speed(20), pitch(0), yaw(0), roll(0) {}
 
 	void update(const class Input &input, const class Time &time);
 
