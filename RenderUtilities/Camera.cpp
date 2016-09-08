@@ -27,6 +27,8 @@ void FlyCamera::update(const Input &input, const Time &time)
 	if (input.getKeyState('E') == Input::DOWN) moveDir -= glm::vec3(view[1]);
 	if (input.getKeyState('Q') == Input::DOWN) moveDir += glm::vec3(view[1]);
 
+	printf("%f\n", moveDir);
+
 	if(glm::length(moveDir) >= .7f)
 	{
 		moveDir = glm::normalize(moveDir);	

@@ -12,7 +12,6 @@
 #include <iostream>
 #include <random>
 
-
 Geometry loadOBJ(const char *path)
 {
 	// Use tiny obj to load the file, 
@@ -26,11 +25,28 @@ Geometry loadOBJ(const char *path)
 	std::string err;
 	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
 
+	int vsize = shapes[0].mesh.indices.size();
+
 	assert(ret && "Failed to load OBJ file!");
 
 	// our data stuff
-	Vertex * verts = new Vertex[attrib.vertices.size() / 3];
-	unsigned * tris = new unsigned[shapes[0].mesh.indices.size()];
+	Vertex * verts = new Vertex[vsize];
+	unsigned * tris = new unsigned[vsize];
+
+	for (int i = 0; i < vsize; ++i)
+	{
+		auto ind = shapes[0].mesh.indices[i];
+		
+		const float *n = &attrib.normals[ind.normal_index * 3]; // +1, +2, 0
+		const float *v = &attrib.vertices[ind.vertex_index * 3]; // +1, +2, 1
+		const float *t = &attrib.texcoords[ind.texcoord_index * 2]; // +1
+
+		verts[i].position = glm::vec4(v[0], v[1], v[2], 1);
+		verts[i].normal = glm::vec4(n[0], n[1], n[3], 0);
+		verts[i].texCoord = glm::vec2(t[0], t[1]);
+
+		tris[0] = i; // 0-35
+	}
 
 	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
 	{
@@ -56,7 +72,7 @@ Geometry loadOBJ(const char *path)
 		tris[i] = shapes[0].mesh.indices[i].vertex_index;
 	}
 
-	Geometry retval = makeGeometry(verts, attrib.vertices.size() / 3, tris, shapes[0].mesh.indices.size());
+	Geometry retval = makeGeometry(verts, vsize, tris, vsize);
 
 	delete[] verts;
 	delete[] tris;
