@@ -10,7 +10,7 @@ bool Input::init(const class Window &window)
 	winHandle = window.winHandle;
 	
 	// Sets cursor to be invisible in window
-	///glfwSetInputMode(winHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(winHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// INITIALIZE ALL THE THINGS
 	mouseX = mouseY = mouseH = mouseV = 0;
@@ -50,7 +50,6 @@ bool Input::update()
 	mouseV = mouseY - prevY;
 	
 	//printf("%f %f\n", mouseX, mouseY);
-
 	return true;
 }
 

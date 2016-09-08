@@ -11,6 +11,7 @@
 #include <string>
 #include <iostream>
 #include <random>
+#include <cstdio>
 
 Geometry loadOBJ(const char *path)
 {
@@ -36,16 +37,16 @@ Geometry loadOBJ(const char *path)
 	for (int i = 0; i < vsize; ++i)
 	{
 		auto ind = shapes[0].mesh.indices[i];
-		
+
 		const float *n = &attrib.normals[ind.normal_index * 3]; // +1, +2, 0
-		const float *v = &attrib.vertices[ind.vertex_index * 3]; // +1, +2, 1
+		const float *p = &attrib.vertices[ind.vertex_index * 3]; // +1, +2, 1
 		const float *t = &attrib.texcoords[ind.texcoord_index * 2]; // +1
 
-		verts[i].position = glm::vec4(v[0], v[1], v[2], 1);
-		verts[i].normal = glm::vec4(n[0], n[1], n[3], 0);
+		verts[i].position = glm::vec4(p[0], p[1], p[2], 1.f);
+		verts[i].normal = glm::vec4(n[0], n[1], n[2], 0.f);
 		verts[i].texCoord = glm::vec2(t[0], t[1]);
 
-		tris[0] = i; // 0-35
+		tris[i] = i;
 	}
 
 	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
