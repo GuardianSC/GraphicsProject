@@ -39,7 +39,11 @@ int main()
 	gallery.loadObjectOBJ("SPHERE", "../res/Models/sphere.obj");
 	//gallery.loadObjectOBJ("CUBE", "../res/Models/cube.obj");
 
-	tex = loadTexture("../res/Textures/xray.jpg");
+	Texture tarray[] = { loadTexture("../res/textures/soulspear_diffuse.tga"), 
+						 loadTexture("../res/textures/soulspear_specular.tga"), 
+						 loadTexture("../res/ textures/soulspear_normal.tga") };
+
+	tex = loadTexture("../res/Textures/space.jpg");
 	
 	// Current time
 	float ct = 0;
@@ -74,8 +78,9 @@ int main()
 		projection = camera.getProjection();
 		camera.update(input, time);
 
-		model = glm::translate(glm::vec3(0, 0, 0)) * glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
-		model1 = glm::translate(glm::vec3(0, 2, 0)) * glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
+		//model = glm::translate(glm::vec3(0, 0, 0)) * glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
+		model = glm::translate(glm::vec3(0, cosf(ct) * 6, 0));
+		//model1 = glm::translate(glm::vec3(0, 2, 0)) * glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
 		//model2 = glm::translate(glm::vec3(0, -2, 0)) * glm::rotate(180.f, glm::vec3(0, -1, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
 
 		//draw(gallery.getShader("TEXTURE"), gallery.getObject("SAMUS"), tex, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), ct);
