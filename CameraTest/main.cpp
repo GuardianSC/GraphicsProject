@@ -31,7 +31,7 @@ int main()
 	Texture noise = genNoise(64, 8);
 
 	/// Loading shader(s)
-	gallery.loadShader("TEXTURE", "../res/Shaders/texVert.txt", "../res/Shaders/texFrag.txt");
+	gallery.loadShader("LIGHTING", "../res/Shaders/phongVert.txt", "../res/Shaders/phongFrag.txt");
 	//gallery.loadShader("CAMERA", "../res/Shaders/cameraVert.txt", "../res/Shaders/cameraFrag.txt");
 
 	/// Loading object(s)
@@ -54,7 +54,7 @@ int main()
 
 	//projection = glm::ortho<float>(-20, 20, -20, 20, -1000, 1000);
 	projection = glm::perspective(45.f, 1.f, .1f, 50.f);
-	//view = glm::lookAt(glm::vec3(10.f, 0.f, 0.f), glm::vec3(0, 0, 0.0f), glm::vec3(0, 1, 0.f));
+	view = glm::lookAt(glm::vec3(5.f, 5.f, 5.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f)); // eye, center, up
 	model = glm::translate(glm::vec3(0, 0, 0));//  * glm::rotate(180.f, glm::vec3(0, -1, 0));
 	model1 = glm::translate(glm::vec3(0, 2, 0));//  * glm::rotate(180.f, glm::vec3(0, -1, 0));
 	//model2 = glm::translate(glm::vec3(0, -2, 0));
@@ -79,8 +79,8 @@ int main()
 		//model2 = glm::translate(glm::vec3(0, -2, 0)) * glm::rotate(180.f, glm::vec3(0, -1, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
 
 		//draw(gallery.getShader("TEXTURE"), gallery.getObject("SAMUS"), tex, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), ct);
-		draw(gallery.getShader("TEXTURE"), plane, tex, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), ct);
-		draw(gallery.getShader("TEXTURE"), gallery.getObject("CUBE"), tex, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1), ct);
+		drawPhong(gallery.getShader("LIGHTING"), plane, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model));
+		drawPhong(gallery.getShader("LIGHTING"), gallery.getObject("CUBE"), glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1));
 		//draw(gallery.getShader("TEXTURE"), gallery.getObject("SPHERE"), tex, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model2), ct);
 	}
 	/// Terminators
