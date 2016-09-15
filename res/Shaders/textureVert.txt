@@ -19,7 +19,7 @@ void main()
 
 	vec4 p = position;
 
-	p.y = texture(texMap, texcoord).b;
+	p.y = texture(texMap, texcoord).r;
 
 	gl_Position = Projection * View * Model * p;
 }
