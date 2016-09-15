@@ -348,7 +348,7 @@ void drawPhong(const Shader & shader, const Geometry &geometry, const float P[16
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }
 
-void drawPhong(const Shader & shader, const Geometry &geometry, const float P[16], const float V[16], const float M[16], const Texture *T, unsigned tcount)
+void drawPhong(const Shader & shader, const Geometry &geometry, const float P[16], const float V[16], const float M[16], const Texture *Texture, unsigned tcount)
 {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -366,15 +366,11 @@ void drawPhong(const Shader & shader, const Geometry &geometry, const float P[16
 	// Normal Map
 	// Albedo Map (color)
 
-	glUniformMatrix4fv(0, 1, GL_FALSE, P);
-	glUniformMatrix4fv(1, 1, GL_FALSE, V);
-	glUniformMatrix4fv(2, 1, GL_FALSE, M);
-
 	for (int i = 0; i < tcount; ++i)
 	{
 		// Minimum guaranteed is 8
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, T[i].handle);
+		glBindTexture(GL_TEXTURE_2D, Texture[i].handle);
 		glUniform1i(3 + i, 0);
 	}
 

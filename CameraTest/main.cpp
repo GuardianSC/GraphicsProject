@@ -9,8 +9,8 @@
 #include "Camera.h"
 #include "glObjects.h"
 #include "procGen.h"
-
-// Welcome to the texture-feature development branch!
+ 
+// Welcome to the lighting-feature development branch!
 
 int main()
 {
@@ -31,13 +31,14 @@ int main()
 	Texture noise = genNoise(64, 8);
 
 	/// Loading shader(s)
-	gallery.loadShader("LIGHTING", "../res/Shaders/phongVert.txt", "../res/Shaders/phongFrag.txt");
-	//gallery.loadShader("CAMERA", "../res/Shaders/cameraVert.txt", "../res/Shaders/cameraFrag.txt");
+	gallery.loadShader("LIGHTING", "../res/Shaders/phongVert.txt"   , "../res/Shaders/phongFrag.txt");
+	gallery.loadShader("CAMERA"  , "../res/Shaders/cameraVert.txt"  , "../res/Shaders/cameraFrag.txt");
+	gallery.loadShader("TEXTURE" , "../res/Shaders/textureVert.txt" , "../res/Shaders/textureFrag.txt");
 
 	/// Loading object(s)
-	//gallery.loadObjectOBJ("SAMUS", "../res/Models/samus.obj");
-	gallery.loadObjectOBJ("SPHERE", "../res/Models/sphere.obj");
-	//gallery.loadObjectOBJ("CUBE", "../res/Models/cube.obj");
+	gallery.loadObjectOBJ("SAMUS"  , "../res/Models/samus.obj");
+	//gallery.loadObjectOBJ("SPHERE" , "../res/Models/sphere.obj");
+	//gallery.loadObjectOBJ("CUBE"   , "../res/Models/cube.obj");
 
 	tex = loadTexture("../res/Textures/xray.jpg");
 	
@@ -50,14 +51,14 @@ int main()
 						   0, 0, 1, 0, // forward
 						   0, 0, 0, 1 }; // translate
 
-	glm::mat4 projection, view, model , model1/*, model2*/; // Matrices
+	glm::mat4 projection, view, model , model1, model2; // Matrices
 
 	//projection = glm::ortho<float>(-20, 20, -20, 20, -1000, 1000);
 	projection = glm::perspective(45.f, 1.f, .1f, 50.f);
-	view = glm::lookAt(glm::vec3(5.f, 5.f, 5.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f)); // eye, center, up
-	model = glm::translate(glm::vec3(0, 0, 0));//  * glm::rotate(180.f, glm::vec3(0, -1, 0));
-	model1 = glm::translate(glm::vec3(0, 2, 0));//  * glm::rotate(180.f, glm::vec3(0, -1, 0));
-	//model2 = glm::translate(glm::vec3(0, -2, 0));
+	view	   = glm::lookAt(glm::vec3(5.f, 5.f, 5.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f)); // eye, center, up
+	model	   = glm::translate(glm::vec3(0, 0, 0));//  * glm::rotate(180.f, glm::vec3(0, -1, 0));
+	model1	   = glm::translate(glm::vec3(0, .5f, 0));//  * glm::rotate(180.f, glm::vec3(0, -1, 0));
+	model2     = glm::translate(glm::vec3(0, -.5f, 0));
 
 	camera.jumpTo(glm::vec3(0, 0, 10));
 	camera.lookAt(glm::vec3(0, 0, 0));
@@ -70,19 +71,17 @@ int main()
 		input.update();
 		ct += time.getDeltaTime();
 		
-		view = camera.getView();
+		view	   = camera.getView();
 		projection = camera.getProjection();
 		camera.update(input, time);
 
-		model = glm::translate(glm::vec3(0, 0, 0)) * glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
 		model1 = glm::translate(glm::vec3(0, 2, 0)) * glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
-		//model2 = glm::translate(glm::vec3(0, -2, 0)) * glm::rotate(180.f, glm::vec3(0, -1, 0)) * glm::scale(glm::vec3(.08f, .08f, .08f));
 
-		//draw(gallery.getShader("TEXTURE"), gallery.getObject("SAMUS"), tex, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), ct);
-		drawPhong(gallery.getShader("LIGHTING"), plane, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model));
-		drawPhong(gallery.getShader("LIGHTING"), gallery.getObject("CUBE"), glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1));
-		//draw(gallery.getShader("TEXTURE"), gallery.getObject("SPHERE"), tex, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model2), ct);
+		///Draw functions
+		draw(gallery.getShader("TEXTURE"), plane, noise, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), ct);
+		drawPhong(gallery.getShader("LIGHTING"), gallery.getObject("SAMUS"), glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1));
 	}
+
 	/// Terminators
 	input.term();
 	time.term();

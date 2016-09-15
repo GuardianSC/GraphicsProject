@@ -38,4 +38,4 @@ void draw(const Shader &shader, const Geometry &geometry, const class Texture &t
 
 void drawPhong(const Shader &shader, const Geometry &geometry, const float P[16], const float V[16], const float M[16]);
 
-void drawPhong(const Shader & shader, const Geometry & geometry, const float P[16], const float V[16], const float M[16], const Texture *T, unsigned tcount);
+void drawPhong(const Shader & shader, const Geometry & geometry, const float P[16], const float V[16], const float M[16], const Texture *Texture, unsigned tcount);
