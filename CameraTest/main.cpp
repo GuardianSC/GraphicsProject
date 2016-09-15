@@ -36,11 +36,16 @@ int main()
 	gallery.loadShader("TEXTURE" , "../res/Shaders/textureVert.txt" , "../res/Shaders/textureFrag.txt");
 
 	/// Loading object(s)
-	gallery.loadObjectOBJ("SAMUS"  , "../res/Models/samus.obj");
+	//gallery.loadObjectOBJ("SAMUS"  , "../res/Models/samus.obj");
 	//gallery.loadObjectOBJ("SPHERE" , "../res/Models/sphere.obj");
 	//gallery.loadObjectOBJ("CUBE"   , "../res/Models/cube.obj");
+	gallery.loadObjectOBJ("SOULSPEAR", "../res/Models/soulspear.obj");
 
 	tex = loadTexture("../res/Textures/xray.jpg");
+
+	Texture tarray[] = { loadTexture("../res/textures/soulspear_diffuse.tga"),
+		loadTexture("../res/textures/soulspear_specular.tga"),
+		loadTexture("../res/textures/soulspear_normal.tga") };
 	
 	// Current time
 	float ct = 0;
@@ -79,7 +84,7 @@ int main()
 
 		///Draw functions
 		draw(gallery.getShader("TEXTURE"), plane, noise, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), ct);
-		drawPhong(gallery.getShader("LIGHTING"), gallery.getObject("SAMUS"), glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1));
+		drawPhong(gallery.getShader("LIGHTING"), plane, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1));
 	}
 
 	/// Terminators

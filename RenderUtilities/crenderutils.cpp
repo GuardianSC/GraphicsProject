@@ -198,9 +198,10 @@ Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsi
 {
 	Texture retval = { 0, width, height, format };
 
-	glGenTextures(1, &retval.handle);
-	glBindTexture(GL_TEXTURE_2D, retval.handle);
+	glGenTextures(1, &retval.handle);				// Declaration
+	glBindTexture(GL_TEXTURE_2D, retval.handle);    // Scoping
 
+	// GL_RED, GL_RG, GL_RGB, GL_RGBA
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -233,18 +234,18 @@ Texture loadTexture(const char *path)
 	int w, h, f;
 	unsigned char *p;
 
-	Texture retval = { 0, 0, 0, 0 };
+	Texture retval = { 0,0,0,0 };
 
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(true); // DirectX or OpenGL
 	p = stbi_load(path, &w, &h, &f, STBI_default);
 
 	if (!p) return retval;
 
 	switch (f)
 	{
-	case STBI_grey: f = GL_RED; break;
-	case STBI_grey_alpha: f = GL_RG; break;
-	case STBI_rgb: f = GL_RGB; break;
+	case STBI_grey: f = GL_RED;  break;
+	case STBI_grey_alpha: f = GL_RG;   break;
+	case STBI_rgb: f = GL_RGB;  break;
 	case STBI_rgb_alpha: f = GL_RGBA; break;
 	}
 
@@ -257,6 +258,49 @@ void freeTexture(Texture &texture)
 {
 	glDeleteTextures(1, &texture.handle);
 	texture = { 0, 0, 0, 0 };
+}
+
+frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors)
+{
+	// handle, width, height, colors[8]
+	frameBuffer retval = { 0, width, height, nColors };
+
+	glGenFramebuffers(1, &retval.handle);
+	glBindFramebuffer(GL_FRAMEBUFFER, retval.handle);
+
+	retval.depth = makeTexture(width, height, GL_DEPTH_COMPONENT, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, retval.depth.handle, 0);
+
+	const GLenum attachments[8] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
+								    GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
+								    GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7 };
+	
+	// Make/attach textures
+	for (int i = 0; i < nColors && i < 8; ++i)
+	{
+		retval.colors[i] = makeTexture(width, height, GL_RGBA, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, attachments[i], retval.colors[i].handle, 0);
+	}
+
+	glDrawBuffers(nColors, attachments);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	return retval;
+}
+
+void freeFrameBuffer(frameBuffer &fb)
+{
+	for (unsigned i = 0; i < fb.nColors; i++)
+		freeTexture(fb.colors[i]);
+
+	glDeleteFramebuffers(1, &fb.handle);
+	fb = { 0, 0, 0, 0 };
+}
+
+void clearFrameBuffer(frameBuffer &fb)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, fb.handle);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 #pragma region Draw
@@ -371,7 +415,33 @@ void drawPhong(const Shader & shader, const Geometry &geometry, const float P[16
 		// Minimum guaranteed is 8
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, Texture[i].handle);
-		glUniform1i(3 + i, 0);
+		glUniform1i(3 + i, 0 + i);
+	}
+
+	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
+}
+
+void drawFB(const Shader & shader, const Geometry & geometry, const frameBuffer &f, const float P[16], const float V[16], const float M[16], const Texture * Texture, unsigned tcount)
+{
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, f.handle);
+	glUseProgram(shader.handle);
+	glBindVertexArray(geometry.vao);
+
+	glViewport(0, 0, f.width, f.height);
+
+	glUniformMatrix4fv(0, 1, GL_FALSE, P);
+	glUniformMatrix4fv(1, 1, GL_FALSE, V);
+	glUniformMatrix4fv(2, 1, GL_FALSE, M);
+
+	for (int i = 0; i < tcount; ++i)
+	{
+		// Minimum guaranteed is 8
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, Texture[i].handle);
+		glUniform1i(3 + i, 0 + i);
 	}
 
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);

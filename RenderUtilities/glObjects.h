@@ -18,3 +18,10 @@ struct Texture
 	unsigned handle;
 	unsigned width, height, format;
 };
+
+struct frameBuffer
+{
+	unsigned handle;
+	unsigned width, height, nColors;
+	Texture depth, colors[8];
+};

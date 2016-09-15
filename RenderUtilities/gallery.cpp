@@ -38,9 +38,21 @@ bool Gallery::loadShader(const char * name, const char * vpath, const char * fpa
 	}
 }
 
+bool Gallery::makeTexture(const char *name, int w, int h, int f, const unsigned char *p)
+{
+	textures[name] = ::makeTexture(w, h, f, p);
+	return true;
+}
+
 bool Gallery::makeObject(const char * name, const Vertex * verts, size_t vsize, const unsigned * tris, size_t tsize)
 {
 	geometries[name] = makeGeometry(verts, vsize, tris, tsize);
+	return true;
+}
+
+bool Gallery::loadTexture(const char *name, const char *path)
+{
+	textures[name] = ::loadTexture(path);
 	return true;
 }
 
@@ -58,6 +70,11 @@ const Shader &Gallery::getShader(const char * name)
 const Geometry &Gallery::getObject(const char * name)
 {
 	return geometries[name];
+}
+
+const Texture &Gallery::getTexture(const char * name)
+{
+	return textures[name];
 }
 
 bool Gallery::term()
