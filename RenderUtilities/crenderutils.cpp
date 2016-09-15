@@ -15,23 +15,13 @@
 
 Geometry loadOBJ(const char *path)
 {
-	// Use tiny obj to load the file, 
-	// Extract vertex positions/face data,
-	// Create an array to store those postions and data
-
-	// tiny obj stuff (required to work)
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string err;
 	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
-
 	int vsize = shapes[0].mesh.indices.size();
-
-	assert(ret && "Failed to load OBJ file!");
-
-	// our data stuff
-	Vertex * verts = new Vertex[vsize];
+	Vertex   *verts = new Vertex[vsize];
 	unsigned * tris = new unsigned[vsize];
 
 	for (int i = 0; i < vsize; ++i)
@@ -40,80 +30,64 @@ Geometry loadOBJ(const char *path)
 
 		const float *n = &attrib.normals[ind.normal_index * 3]; // +1, +2, 0
 		const float *p = &attrib.vertices[ind.vertex_index * 3]; // +1, +2, 1
-		const float *t = &attrib.texcoords[ind.texcoord_index * 2]; // +1
 
 		verts[i].position = glm::vec4(p[0], p[1], p[2], 1.f);
 		verts[i].normal = glm::vec4(n[0], n[1], n[2], 0.f);
-		verts[i].texCoord = glm::vec2(t[0], t[1]);
+
+		if (ind.texcoord_index >= 0)
+		{
+			const float *t = &attrib.texcoords[ind.texcoord_index * 2]; // +1
+			verts[i].texCoord = glm::vec2(t[0], t[1]);
+		}
 
 		tris[i] = i;
-	}
-
-	for (int i = 0; i < attrib.vertices.size() / 3; ++i)
-	{
-		verts[i].position =
-		{
-			attrib.vertices[i * 3],
-			attrib.vertices[i * 3 + 1],
-			attrib.vertices[i * 3 + 2],
-			1
-		};
-
-		assert(i <= attrib.vertices.size() / 3);
-
-		//@TODO: look into dis
-		verts[i].color[0] = rand() * 1.0f / RAND_MAX;
-		verts[i].color[1] = rand() * 1.0f / RAND_MAX;
-		verts[i].color[2] = rand() * 1.0f / RAND_MAX;
-		verts[i].color[3] = 1;
-	}
-
-	for (int i = 0; i < shapes[0].mesh.indices.size(); ++i)
-	{
-		tris[i] = shapes[0].mesh.indices[i].vertex_index;
 	}
 
 	Geometry retval = makeGeometry(verts, vsize, tris, vsize);
 
 	delete[] verts;
 	delete[] tris;
-
+	// then we can call makeGeometry as per normal.
 	return retval;
 }
 
-Geometry makeGeometry(const Vertex * verts, const size_t vsize, const unsigned int * tris, size_t tsize)
+
+Geometry makeGeometry(const Vertex * verts, size_t vsize,
+	const unsigned int * tris, size_t tsize)
 {
 	Geometry retval;
-	retval.size = tsize;
-	// Define, manually scope, initialize, and then unscope the variables
 
-	// Define
-	glGenBuffers(1, &retval.vbo); // store vertices
-	glGenBuffers(1, &retval.ibo); // store indices
-	glGenVertexArrays(1, &retval.vao); // store attribute information (inside the vertex struct)
+	// Define the variables
+	glGenBuffers(1, &retval.vbo);	   // Store vertices
+	glGenBuffers(1, &retval.ibo);	   // Store indices
+	glGenVertexArrays(1, &retval.vao); // Store attribute information
 
-	// Scope
-	glBindVertexArray(retval.vao); // binds the only active buffer (only one buffer can be active at a time)
-	glBindBuffer(GL_ARRAY_BUFFER, retval.vbo); // scope vertices
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, retval.ibo); // // scope triangle
-	
-	// Initialize
+									   // Scope the variables
+	glBindVertexArray(retval.vao);
+	glBindBuffer(GL_ARRAY_BUFFER, retval.vbo); // scope our vertices
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, retval.ibo); // triangle is scoped
+
+													   // Initialize the variables
 	glBufferData(GL_ARRAY_BUFFER, vsize * sizeof(Vertex), verts, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, tsize * sizeof(unsigned), tris, GL_STATIC_DRAW);
 
-	// Attributes
-	glEnableVertexAttribArray(0); // position
-	glEnableVertexAttribArray(1); // color
+	// Attributes let us tell openGL how the memory is laid out
+	glEnableVertexAttribArray(0); // Position
+	glEnableVertexAttribArray(1); // Color
+	glEnableVertexAttribArray(2); // Normal
+	glEnableVertexAttribArray(3); // TexCoord
 
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::POSITION); // position
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::COLOR); // color
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::NORMAL); // position
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::TEXCOORD); // color
-	// Unscope
+								  // index of the attribute, number of elements, type, normalized?, size of vertex, offset
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::POSITION);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::COLOR);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::NORMAL);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)Vertex::TEXCOORD);
+
+	// unscope the variables
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
+	retval.size = tsize;
 	return retval;
 }
 
@@ -438,11 +412,11 @@ void drawFB(const Shader & shader, const Geometry & geometry, const frameBuffer 
 
 	for (int i = 0; i < tcount; ++i)
 	{
-		// Minimum guaranteed is 8
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, Texture[i].handle);
 		glUniform1i(3 + i, 0 + i);
 	}
+
 
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }
