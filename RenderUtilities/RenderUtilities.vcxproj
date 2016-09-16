@@ -146,6 +146,18 @@
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\res\Shaders\cameraFrag.glsl" />
+    <None Include="..\res\Shaders\cameraVert.glsl" />
+    <None Include="..\res\Shaders\phongFrag.glsl" />
+    <None Include="..\res\Shaders\phongVert.glsl" />
+    <None Include="..\res\Shaders\postFrag.glsl" />
+    <None Include="..\res\Shaders\postVert.glsl" />
+    <None Include="..\res\Shaders\simpleFrag.glsl" />
+    <None Include="..\res\Shaders\simpleVert.glsl" />
+    <None Include="..\res\Shaders\textureFrag.glsl" />
+    <None Include="..\res\Shaders\textureVert.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

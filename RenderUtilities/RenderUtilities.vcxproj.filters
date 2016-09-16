@@ -7,6 +7,9 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{0a3219d8-9808-4496-8968-354ba8dc40b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{0cd9dffa-495f-4bd2-b575-621433cc3065}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -62,5 +65,37 @@
     <ClInclude Include="procGen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\res\Shaders\cameraFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\cameraVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\phongFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\phongVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\postFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\postVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\simpleFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\simpleVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\textureFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\res\Shaders\textureVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

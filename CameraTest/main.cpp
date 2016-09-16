@@ -27,22 +27,31 @@ int main()
 	time.init();
 	input.init(window);
 
+	/// Loading things
+
 	Geometry plane = genGrid(512, 2);
 	Texture noise = genNoise(64, 8);
 
 	/// Loading shader(s)
-	//gallery.loadShader("CAMERA", "../res/Shaders/cameraVert.txt", "../res/Shaders/cameraFrag.txt");
-	//gallery.loadShader("TEXTURE", "../res/Shaders/textureVert.txt", "../res/Shaders/textureFrag.txt");+
-	gallery.loadShader("LIGHTING", "../res/Shaders/phongVert.txt", "../res/Shaders/phongFrag.txt");
-	//gallery.loadShader("POST", "../res/Shaders/postVert.txt", "../res/Shaders/postFrag.txt");
+	Shader cam = loadShader("../res/Shaders/cameraVert.glsl", "../res/Shaders/cameraFrag.glsl");
+	Shader texture = loadShader("../res/Shaders/textureVert.glsl", "../res/Shaders/textureFrag.glsl");
+	Shader lighting = loadShader("../res/Shaders/phongVert.glsl", "../res/Shaders/phongFrag.glsl");
+	Shader post = loadShader("../res/Shaders/postVert.glsl", "../res/Shaders/postFrag.glsl");
+
+	Shader sArray[] = { cam, texture, lighting, post };
 
 	/// Loading object(s)
 	//gallery.loadObjectOBJ("SAMUS"      , "../res/Models/samus.obj");
 	//gallery.loadObjectOBJ("SPHERE"   , "../res/Models/sphere.obj");
 	//gallery.loadObjectOBJ("CUBE"     , "../res/Models/cube.obj");
-	gallery.loadObjectOBJ("SOULSPEAR", "../res/Models/soulspear.obj");
+	//gallery.loadObjectOBJ("SOULSPEAR", "../res/Models/soulspear.obj");
 
-	
+	//Geometry sphere = loadOBJ("../res/Models/sphere.obj");
+	//Geometry cube = loadOBJ("../res/Models/cube.obj");
+	Geometry samus = loadOBJ("../res/Models/samus.obj");
+	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
+
+	Geometry gArray[] = { samus, soulspear };
 
 	Vertex  verts[4] = {   { {-1,-1,0,1 },  {}, {}, {0 ,0}   },
 						   { {1,-1,0,1 },   {}, {}, {1, 0}   },
@@ -56,12 +65,12 @@ int main()
 	/// Loading texture(s)
 	//tex = loadTexture("../res/Textures/xray.jpg");
 
-	Texture tarray[] = { loadTexture("../res/Textures/soulspear_diffuse.tga"),
+	Texture tArray[] = { loadTexture("../res/Textures/soulspear_diffuse.tga"),
 		loadTexture("../res/Textures/soulspear_specular.tga"),
 		loadTexture("../res/Textures/soulspear_normal.tga") };
 
 	frameBuffer frame = makeFrameBuffer(1350, 750, 3);
-	frameBuffer screen = { 0, 1280, 720, 1 };
+	frameBuffer screen = { 0, 1350, 750, 1 };
 
 	// Current time
 	float ct = 0;
@@ -96,18 +105,26 @@ int main()
 		projection = camera.getProjection();
 		camera.update(input, time);
 
+		model = /*glm::translate(glm::vec3(0, 2, 0)) * */glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0));
 		model1 = /*glm::translate(glm::vec3(0, 2, 0)) * */glm::rotate(ct  * .5f, glm::vec3(0, .5f, 0));
 
 		///Draw functions
 		//draw(gallery.getShader("TEXTURE"), plane, noise, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), ct);
-		drawFB(gallery.getShader("POST"), gallery.getObject("SOULSPEAR"),screen,
-											  glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1), tarray,3);
+		drawFB(lighting, soulspear,screen, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model), tArray, 3);
+		//drawFB(lighting, samus, screen, glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1), tarray, 3);
 		/*drawFB(gallery.getShader("POST"), gallery.getObject("SOULSPEAR"), screen,
 											  glm::value_ptr(projection), glm::value_ptr(view), glm::value_ptr(model1), tarray, 3);*/
-		drawFB(gallery.getShader("POST"), quad, screen, glm::value_ptr(glm::mat4()), glm::value_ptr(glm::mat4()), glm::value_ptr(glm::mat4()), frame.colors, frame.nColors);
+		//drawFB(gallery.getShader("POST"), quad, screen, glm::value_ptr(glm::mat4()), glm::value_ptr(glm::mat4()), glm::value_ptr(glm::mat4()), frame.colors, frame.nColors);
 	}
 
-	/// Terminators
+	/// Freeing of things/Terminators
+	freeFrameBuffer(frame);
+	//freeShader(lighting);
+	//freeGeometry(soulspear);
+	for each(auto &g in gArray) freeGeometry(g);
+	for each(auto &s in sArray) freeShader(s);
+	for each(auto &t in tArray) freeTexture(t);
+	
 	input.term();
 	time.term();
 	gallery.term();
