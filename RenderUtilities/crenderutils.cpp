@@ -420,4 +420,42 @@ void drawFB(const Shader & shader, const Geometry & geometry, const frameBuffer 
 
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }
+//void drawFB(const Shader & shader, unsigned scount, const Geometry & geometry, unsigned gcount, const frameBuffer & f, const float P[16], const float V[16], const float M[16], const Texture * Texture, unsigned tcount)
+//{
+//	glEnable(GL_CULL_FACE);
+//	glEnable(GL_DEPTH_TEST);
+//
+//	glBindFramebuffer(GL_FRAMEBUFFER, f.handle);
+//	glUseProgram(shader.handle);
+//	glBindVertexArray(geometry.vao);
+//
+//	glViewport(0, 0, f.width, f.height);
+//
+//	glUniformMatrix4fv(0, 1, GL_FALSE, P);
+//	glUniformMatrix4fv(1, 1, GL_FALSE, V);
+//	glUniformMatrix4fv(2, 1, GL_FALSE, M);
+//
+//	for (int i = 0; i < scount; ++i)
+//	{
+//		glActiveShaderProgram(GL_SHADER + i);
+//		//glBindS
+//		glUniform1i(3 + i, 0 + i);
+//	}
+//
+//	for (int i = 0; i < gcount; ++i)
+//	{
+//		
+//		
+//	}
+//
+//	for (int i = 0; i < tcount; ++i)
+//	{
+//		glActiveTexture(GL_TEXTURE0 + i);
+//		glBindTexture(GL_TEXTURE_2D, Texture[i].handle);
+//		glUniform1i(3 + i, 0 + i);
+//	}
+//
+//
+//	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
+//}
 #pragma endregion

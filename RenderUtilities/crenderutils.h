@@ -43,3 +43,5 @@ void drawPhong(const Shader &shader, const Geometry &geometry, const float P[16]
 void drawPhong(const Shader & shader, const Geometry & geometry, const float P[16], const float V[16], const float M[16], const Texture *Texture, unsigned tcount);
 
 void drawFB(const Shader & shader, const Geometry & geometry, const frameBuffer &f, const float P[16], const float V[16], const float M[16], const Texture *Texture, unsigned tcount);
+
+//void drawFB(const Shader & shader, unsigned scount, const Geometry & geometry, unsigned gcount, const frameBuffer &f, const float P[16], const float V[16], const float M[16], const Texture * Texture, unsigned tcount);

@@ -33,12 +33,12 @@ int main()
 	Texture noise = genNoise(64, 8);
 
 	/// Loading shader(s)
-	Shader cam = loadShader("../res/Shaders/cameraVert.glsl", "../res/Shaders/cameraFrag.glsl");
-	Shader texture = loadShader("../res/Shaders/textureVert.glsl", "../res/Shaders/textureFrag.glsl");
+	//Shader cam = loadShader("../res/Shaders/cameraVert.glsl", "../res/Shaders/cameraFrag.glsl");
+	//Shader texture = loadShader("../res/Shaders/textureVert.glsl", "../res/Shaders/textureFrag.glsl");
 	Shader lighting = loadShader("../res/Shaders/phongVert.glsl", "../res/Shaders/phongFrag.glsl");
-	Shader post = loadShader("../res/Shaders/postVert.glsl", "../res/Shaders/postFrag.glsl");
+	//Shader post = loadShader("../res/Shaders/postVert.glsl", "../res/Shaders/postFrag.glsl");
 
-	Shader sArray[] = { cam, texture, lighting, post };
+	//Shader sArray[] = { cam, texture, lighting, post };
 
 	/// Loading object(s)
 	//gallery.loadObjectOBJ("SAMUS"      , "../res/Models/samus.obj");
@@ -48,10 +48,10 @@ int main()
 
 	//Geometry sphere = loadOBJ("../res/Models/sphere.obj");
 	//Geometry cube = loadOBJ("../res/Models/cube.obj");
-	Geometry samus = loadOBJ("../res/Models/samus.obj");
+	//Geometry samus = loadOBJ("../res/Models/samus.obj");
 	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
 
-	Geometry gArray[] = { samus, soulspear };
+	//Geometry gArray[] = { samus, soulspear };
 
 	Vertex  verts[4] = {   { {-1,-1,0,1 },  {}, {}, {0 ,0}   },
 						   { {1,-1,0,1 },   {}, {}, {1, 0}   },
@@ -119,10 +119,10 @@ int main()
 
 	/// Freeing of things/Terminators
 	freeFrameBuffer(frame);
-	//freeShader(lighting);
-	//freeGeometry(soulspear);
-	for each(auto &g in gArray) freeGeometry(g);
-	for each(auto &s in sArray) freeShader(s);
+	freeShader(lighting);
+	freeGeometry(soulspear);
+	//for each(auto &g in gArray) freeGeometry(g);
+	//for each(auto &s in sArray) freeShader(s);
 	for each(auto &t in tArray) freeTexture(t);
 	
 	input.term();
