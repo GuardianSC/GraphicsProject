@@ -1,6 +1,6 @@
-#include "Camera.h"
-#include "Timer.h"
-#include "Input.h"
+#include "camera.h"
+#include "timer.h"
+#include "input.h"
 
 void FlyCamera::update(const Input &input, const Time &time)
 {

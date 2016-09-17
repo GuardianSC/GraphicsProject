@@ -1,5 +1,5 @@
 #include "GLFW\glfw3.h"
-#include "Timer.h"
+#include "timer.h"
 
 bool Time::init()
 {

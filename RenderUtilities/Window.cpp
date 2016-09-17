@@ -1,7 +1,7 @@
 #define GLEW_STATIC
 #include "GLEW\glew.h"
 #include "GLFW\glfw3.h"
-#include "Window.h"
+#include "window.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -13,9 +13,10 @@ void APIENTRY GL_errorCallback(GLenum source, GLenum type, GLuint id, GLenum sev
 	
 	if (severity == GL_DEBUG_SEVERITY_HIGH)
 	{
-		abort();
+		//abort();
+		system("pause");
 	}
-}
+};
 
 #endif
 

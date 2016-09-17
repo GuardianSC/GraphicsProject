@@ -1,26 +1,18 @@
-#version 330
-
-// locations are the 'attributes' from the vertex
-// in brings data in from the previous
+#version 430
 
 layout(location = 0) in vec4 position;
-layout(location = 1) in vec4 color;
+layout(location = 3) in vec2 texCoord;
 
-// out sends data to the next step of the pipeline
-out vec4 vColor;
+out vec2 vUV;
 out vec4 vPosition;
 
-layout(location = 3)uniform float time = 0.0;
+layout(location = 0) uniform mat4 model;
+layout(location = 1) uniform mat4 view;
+layout(location = 2) uniform mat4 projection;
 
 void main()
 {
-	vColor = color;
 	vPosition = position;
-	gl_Position = position;
-
-
-	gl_Position.y += cos(time + position.x)/2;
-
-	//gl_Position.w = sin(cos((time + position.y)*2)*2+1)/10;
+	vUV = texCoord;
+	gl_Position = projection * view * model * position;
 }
-

@@ -126,25 +126,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="crenderutils.cpp" />
+    <ClCompile Include="glDraw.cpp" />
     <ClCompile Include="gallery.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="glFree.cpp" />
+    <ClCompile Include="glLoad.cpp" />
+    <ClCompile Include="glMake.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="procGen.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="crenderutils.h" />
+    <ClInclude Include="glDraw.h" />
     <ClInclude Include="gallery.h" />
-    <ClInclude Include="gldecs.h" />
+    <ClInclude Include="glErr.h" />
+    <ClInclude Include="glFree.h" />
+    <ClInclude Include="glLoad.h" />
+    <ClInclude Include="glMake.h" />
     <ClInclude Include="glObjects.h" />
-    <ClInclude Include="Input.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="procGen.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="vertex.h" />
+    <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\Shaders\cameraFrag.glsl" />

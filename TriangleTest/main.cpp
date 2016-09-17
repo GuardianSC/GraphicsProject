@@ -1,68 +1,35 @@
-#include "Window.h"
-#include "Vertex.h"
 #include "crenderutils.h"
-#include "gallery.h"
-
-// Welcome to the file-feature development branch!
+#include "GLM\ext.hpp"
 
 int main()
 {
-	Window window;
-	Gallery gallery;
+	Window context;
+	context.init(1350, 750);
 
-	window.init(600, 600);
-	gallery.init();
+	frameBuffer screen = { 0, 1350, 750 };
 
-	/* clip space coordinates, go from -1, 1
-	//Vertex vert[6] = { 
-	//	// First, larger triangle
-	//	{ 0,     .5f, 0, 1, 1, 0, 0, 1 },
-	//	{ .5f,  -.5f, 0, 1, 0, 1, 0, 1 },
-	//    { -.5f, -.5f, 0, 1, 0, 1, 1, 1 },
-	//	// Smaller, second triangle
-	//	{ 0,    -.25f, 0, 1, 1, 1, 1, 1 },
-	//	{ -.25f, .25f, 0, 1, 0, 1, 0, 1 },
-	//	{ .25f,  .25f, 0, 1, 0, 0, 0, 1 },
-	//};
+	//Geometry quad = makeGeometry(quadVerts, 4, quadTris, 6);
+	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
 
-	//unsigned tris[6] = { 0, 1, 2, 3, 4, 5 };
+	Texture soulspearNormal = loadTexture("../res/Textures/soulspear_normal.tga");
+	Texture soulspearDiffuse = loadTexture("../res/Textures/soulspear_diffuse.tga");
+	Texture soulspearSpecular = loadTexture("../res/Textures/soulspear_specular.tga");
 
-	/*const char vsource[] = 
-		"#version 330\n"
-		"layout(location = 0)in vec4 position;"
-		"layout(location = 1)in vec4 color;"
-		"out vec4 vColor;"
-		"void main() { vColor = color; gl_Position = position; } ";
+	glm::mat4 model, view, projection;
 
-	const char fsource[] = 
-		"#version 150\n"
-		"in vec4 vColor;"
-		"out vec4 outColor;"
-		"void main () { outColor = vColor; } ";
+	model = glm::translate(glm::vec3(0, -2, 0)) * glm::scale(glm::vec3(.5f, .5f, .5f));
+	view = glm::lookAt(glm::vec3(0, 0, 4), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	projection = glm::perspective(45.f, 1280.f / 720, 1.f, 100.f);
 
-	//Geometry geometry1 = makeGeometry(vert, 6, tris, 6);
-	//Shader shader1 = makeShader(vsource, fsource);
 
-	//Shader shader = loadShader("../res/Shaders/simpleVert.txt", "../res/Shaders/simpleFrag.txt");
+	Shader simple = loadShader("../res/Shaders/simpleVert.glsl", "../res/Shaders/simpleFrag.glsl");
 
-	Geometry geometry = loadOBJ("../res/Models/sphere.obj");*/
-	
-	gallery.loadShader("SHADER", "../res/shaders/simpleVert.txt", "../res/shaders/simpleFrag.txt");
+	//Texture tex = loadTexture("../res/Textures/30fps.png");
 
-	//gallery.loadObjectOBJ("SPHERE", "../res/models/sphere.obj");
-	//gallery.loadObjectOBJ("PANDA", "../res/models/Panda 1.obj");
-	gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
-
-	float time = 0;
-
-	while (window.update())
+	while (context.update())
 	{
-		time += 0.1667f;
-		//draw(gallery.getShader("SHADER"), gallery.getObject("SPHERE"), time);
-		//draw(gallery.getShader("SHADER"), gallery.getObject("PANDA"), time);
-		draw(gallery.getShader("SHADER"), gallery.getObject("CUBE"), time);
+		tdraw(simple, soulspear, screen, model, view, projection, soulspearNormal, soulspearDiffuse, soulspearSpecular);
 	}
-	gallery.term();
-	window.term();
+
 	return 0;
 }

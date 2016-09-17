@@ -1,4 +1,4 @@
-#include "gldecs.h"
+#include "glErr.h"
 #include "crenderutils.h"
 #include "Gallery.h"
 

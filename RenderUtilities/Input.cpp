@@ -1,6 +1,6 @@
 #include "GLFW\glfw3.h"
 #include "Window.h"
-#include "Input.h"
+#include "input.h"
 #include <cstring>
 #include <cstdio>
 

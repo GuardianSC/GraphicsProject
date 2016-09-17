@@ -1,70 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{9d6e75ec-85d8-4866-ac02-254b06edbd83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{0a3219d8-9808-4496-8968-354ba8dc40b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader Files">
       <UniqueIdentifier>{0cd9dffa-495f-4bd2-b575-621433cc3065}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gl">
+      <UniqueIdentifier>{5e26e855-d07d-4637-b842-68818d5d61fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="crenderutils.cpp" />
+    <ClCompile Include="gallery.cpp" />
+    <ClCompile Include="procGen.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="window.cpp" />
+    <ClCompile Include="glMake.cpp">
+      <Filter>gl</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="glDraw.cpp">
+      <Filter>gl</Filter>
     </ClCompile>
-    <ClCompile Include="procGen.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="glLoad.cpp">
+      <Filter>gl</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gallery.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="crenderutils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="glFree.cpp">
+      <Filter>gl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="crenderutils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gldecs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gallery.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="crenderutils.h" />
+    <ClInclude Include="gallery.h" />
+    <ClInclude Include="procGen.h" />
     <ClInclude Include="glObjects.h">
-      <Filter>Header Files</Filter>
+      <Filter>gl</Filter>
     </ClInclude>
-    <ClInclude Include="procGen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="glMake.h">
+      <Filter>gl</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="window.h" />
+    <ClInclude Include="glLoad.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="glDraw.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="glErr.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="glFree.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\Shaders\cameraFrag.glsl">
