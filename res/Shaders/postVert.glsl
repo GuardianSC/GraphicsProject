@@ -1,14 +1,12 @@
 #version 430
 
 layout(location = 0) in vec4 position;
-layout(location = 3) in vec2 texcoord;
+layout(location = 3) in vec2 UV;
 
-
-
-out vec2 UV;
+out vec2 vUV;
 
 void main()
-{	
-	UV =	texcoord;
+{
+	vUV = UV;
 	gl_Position = position;
 }

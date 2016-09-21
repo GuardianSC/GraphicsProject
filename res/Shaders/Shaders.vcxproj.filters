@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{6d8d5ab4-7ee2-4551-ac13-2a80f7a408cc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cameraFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="cameraVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="phongFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="phongVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="postFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="postVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="simpleFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="simpleVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="textureFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="textureVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="gPassFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="gPassVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
