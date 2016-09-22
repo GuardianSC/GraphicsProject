@@ -7,10 +7,16 @@ void main()
 	context.init(1350, 750);
 
 	frameBuffer screen = { 0, 1350, 750 };
-	frameBuffer frame = makeFrameBuffer(1350, 750, 2);
+	frameBuffer gframe = makeFrameBuffer(1350, 750, 4);
+	frameBuffer lframe = makeFrameBuffer(1350, 750, 2);
 
 	Shader simple = loadShader("../res/Shaders/simpleVert.glsl", "../res/Shaders/simpleFrag.glsl");
 	Shader post = loadShader("../res/Shaders/postVert.glsl", "../res/Shaders/postFrag.glsl");
+	Shader quad = loadShader("../res/Shaders/quadVert.glsl", "../res/Shaders/quadFrag.glsl");
+	// Geometry pass
+	Shader gPass = loadShader("../res/Shaders/gPassVert.glsl", "../res/Shaders/gPassFrag.glsl");
+	// Lighting pass
+	Shader lPass = loadShader("../res/Shaders/lPassVert.glsl", "../res/Shaders/lPassFrag.glsl");
 
 	//Texture tex = loadTexture("../res/Textures/30fps.png");
 
@@ -29,15 +35,18 @@ void main()
 	float time = 0;
 
 	while (context.update())
-	{ 
+	{
 		time += 0.016f;
-		clearFramebuffer(frame);
+		clearFramebuffer(gframe);
+		clearFramebuffer(lframe);
 
 		model = glm::rotate(time, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(0, -1, 0));
 
-		tdraw(simple, soulspear, screen, model, view, projection, soulspearNormal, soulspearDiffuse, soulspearSpecular);
+		tdraw(gPass, soulspear, gframe, model, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
 
-		tdraw(post, quad, screen, frame.colors[0], frame.colors[1]);
+		//tdraw(lPass, quad, lframe, view, projection, gframe.colors[0], gframe.colors[1], gframe.colors[2], gframe.colors[2], gframe.depth);
+
+		//tdraw(post, quad, screen, lframe.colors[0]);
 	}
 
 	context.term();

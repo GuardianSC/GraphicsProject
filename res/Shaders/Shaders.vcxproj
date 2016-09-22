@@ -114,10 +114,14 @@
     <None Include="cameraVert.glsl" />
     <None Include="gPassFrag.glsl" />
     <None Include="gPassVert.glsl" />
+    <None Include="lPassFrag.glsl" />
+    <None Include="lPassVert.glsl" />
     <None Include="phongFrag.glsl" />
     <None Include="phongVert.glsl" />
     <None Include="postFrag.glsl" />
     <None Include="postVert.glsl" />
+    <None Include="quadFrag.glsl" />
+    <None Include="quadVert.glsl" />
     <None Include="simpleFrag.glsl" />
     <None Include="simpleVert.glsl" />
     <None Include="textureFrag.glsl" />

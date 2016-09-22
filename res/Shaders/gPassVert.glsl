@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec4 position;
 layout(location = 2) in vec4 normal;
-layout(location = 3) in vec4 texCoord;
+layout(location = 3) in vec2 texCoord;
 
 out vec2 vUV;
 out vec3 vNormal;
@@ -18,5 +18,5 @@ void main()
 	vPosition = (view * model * position).xyz;
 
 	vUV = texCoord;
-	gl_POsition = projection * view * model * position;
+	gl_Position = projection * view * model * position;
 }
