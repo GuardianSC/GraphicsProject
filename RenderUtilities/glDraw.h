@@ -7,12 +7,12 @@ void clearFramebuffer(const frameBuffer &Framebuffer);
 
 namespace tdraw_internal
 {
-	void tdraw_begin(const Shader &s, const Geometry &g, const frameBuffer &Framebuffer);
-	void tdraw_close(const Shader &s, const Geometry &g, const frameBuffer &Framebuffer);
+	void tdraw_begin(const Shader &shader, const Geometry &g, const frameBuffer &Framebuffer);
+	void tdraw_close(const Shader &shader, const Geometry &g, const frameBuffer &Framebuffer);
 
 	size_t tdraw_format(size_t idx, size_t tex, const glm::mat4 &val);
 	size_t tdraw_format(size_t idx, size_t tex, const glm::vec3 &val);
-
+	size_t tdraw_format(size_t idx, size_t tex, const glm::vec4 &val);
 	size_t tdraw_format(size_t idx, size_t tex, int   val);
 	size_t tdraw_format(size_t idx, size_t tex, float val);
 	size_t tdraw_format(size_t idx, size_t tex, const Texture &val);

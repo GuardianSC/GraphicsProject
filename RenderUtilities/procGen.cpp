@@ -21,8 +21,8 @@ Geometry genGrid(unsigned sqr, float dim)
 			verts[r * sqr + c].texCoord = glm::vec2(c / (sqr - 1.f), r / (sqr - 1.f));
 			verts[r * sqr + c].normal = glm::vec4(0, 1, 0, 0);
 		}
-	// generate an array of vertices
 
+	/// generate an array of vertices
 	unsigned index = 0;
 
 	for (int r = 0; r < sqr - 1; ++r)
@@ -65,11 +65,8 @@ Texture genNoise(unsigned sqr, unsigned octaves)
 				noise[y*sqr + x] += data * amplitude;
 				amplitude *= persistence;
 			}
-
-
 		}
-
-
+	
 	Texture retval = makeTextureF(sqr, noise);
 	delete[] noise;
 	return retval;

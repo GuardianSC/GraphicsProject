@@ -33,7 +33,7 @@ bool Window::init(int a_width, int a_height, char * a_title)
 	isInitialized = true;
 	glewExperimental = true;
 	glewInit();
-	glClearColor(.5f, .0f, .75f, .65f); // Default background color
+	glClearColor(.0f, .0f, 0, .0f); // Default background color
 
 #ifdef _DEBUG
 	glEnable(GL_DEBUG_OUTPUT);

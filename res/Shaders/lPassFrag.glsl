@@ -10,11 +10,12 @@ layout(location = 5) uniform sampler2D positionMap;
 layout(location = 6) uniform sampler2D depthMap;
 
 layout(location = 0) out vec4 outColor;
-layout(location = 1) out vec4 outSpecular;
+layout(location = 1) out vec4 outAlbedo;
+layout(location = 2) out vec4 outSpecular;
 
 in vec2 vUV;
 
-uniform vec4 lDir = normalize(texture(normalMap, vUV).xyz);
+uniform vec4 lDir = normalize(vec4(1, 0, -1, 0));
 
 void main()
 {
@@ -24,11 +25,12 @@ void main()
 	vec3 E = -normalize(texture(positionMap, vUV).xyz);
 	float sP = 2;
 
-	float lamb = max(0, -dot(L, N));
+	float lamb = max(0, -dot(L * R, N * E));
 	float spec = max(0, -dot(E, R));
 
 	if (spec > 0) spec = pow(spec, sP);
 
-	outColor = texture(albedoMap, vUV) * lamb;
+	outAlbedo = texture(albedoMap, vUV) * lamb;
 	outSpecular = texture(specularMap, vUV) * spec;
+	outColor = outAlbedo + outSpecular;
 }

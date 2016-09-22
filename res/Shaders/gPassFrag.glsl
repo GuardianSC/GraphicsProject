@@ -10,7 +10,6 @@ layout(location = 5) uniform sampler2D specularMap;
 
 mat3 cotangent_frame(in vec3 N, in vec3 p, in vec2 uv);
 
-
 layout(location = 0) out vec4 albedo;
 layout(location = 1) out vec4 normal;
 layout(location = 2) out vec4 specular;

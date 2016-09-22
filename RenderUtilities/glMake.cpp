@@ -42,10 +42,10 @@ Geometry makeGeometry(const Vertex * verts, size_t vsize,
 	return retval;
 }
 
-Shader makeShader(const char *vsource, const char *fsource)
+Shader makeShader(const char *vsource, const char *fsource, bool depth, bool add, bool face)
 {
-	Shader retval;
-	// create variables
+	Shader retval = { 0, depth, add, face };
+	/// create variables
 	retval.handle = glCreateProgram();
 	unsigned vs = glCreateShader(GL_VERTEX_SHADER);
 	unsigned fs = glCreateShader(GL_FRAGMENT_SHADER);
@@ -67,9 +67,20 @@ Shader makeShader(const char *vsource, const char *fsource)
 	return retval;
 }
 
-Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels)
+Texture makeTexture(unsigned width, unsigned height, unsigned channels, const unsigned char *pixels)
 {
-	Texture retval = { 0, width, height, format };
+	GLenum format = GL_RGBA;
+	switch (channels)
+	{
+		case 0: format = GL_DEPTH_COMPONENT; break;
+		case 1: format = GL_RED;  break;
+		case 2: format = GL_RG;   break;
+		case 3: format = GL_RGB;  break;
+		case 4: format = GL_RGBA; break;
+		default: glog("ERROR", "Channels must be 0-4");
+	}
+
+	Texture retval = { 0, width, height, channels };
 
 	glGenTextures(1, &retval.handle);				// Declaration
 	glBindTexture(GL_TEXTURE_2D, retval.handle);    // Scoping
@@ -110,14 +121,14 @@ frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors)
 	glGenFramebuffers(1, &retval.handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, retval.handle);
 
-	retval.depth = makeTexture(width, height, GL_DEPTH_COMPONENT, 0);
+	retval.depth = makeTexture(width, height, 0, 0);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, retval.depth.handle, 0);
 
 	const GLenum attachments[8] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
 		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
 		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7 };
 
-	// Make/attach textures
+	/// Make/attach textures
 	for (int i = 0; i < nColors && i < 8; ++i)
 	{
 		retval.colors[i] = makeTexture(width, height, GL_RGBA, 0);

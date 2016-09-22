@@ -6,6 +6,7 @@
 #include "STB\stb_image.h"
 #include "glLoad.h"
 #include "glMake.h"
+#include "glErr.h"
 #include "vertex.h"
 #include <iostream>
 
@@ -79,16 +80,17 @@ Geometry loadOBJ(const char *path)
 	return retval;
 }
 
-
-Shader loadShader(const char *vpath, const char *fpath)
+Shader loadShader(const char *vpath, const char *fpath, bool depth, bool add, bool face)
 {
 	char* v = getStringFromFile(vpath);
 	char* f = getStringFromFile(fpath);
-	return makeShader(v, f);
+	return makeShader(v, f, depth, add, face);
 }
 
 Texture loadTexture(const char *path)
 {
+	glog("Loading Texture", path);
+
 	int w, h, f;
 	unsigned char *p;
 
@@ -98,14 +100,6 @@ Texture loadTexture(const char *path)
 	p = stbi_load(path, &w, &h, &f, STBI_default);
 
 	if (!p) return retval;
-
-	switch (f)
-	{
-	case STBI_grey: f = GL_RED;  break;
-	case STBI_grey_alpha: f = GL_RG;   break;
-	case STBI_rgb: f = GL_RGB;  break;
-	case STBI_rgb_alpha: f = GL_RGBA; break;
-	}
 
 	retval = makeTexture(w, h, f, p);
 	stbi_image_free(p);

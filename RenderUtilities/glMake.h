@@ -5,10 +5,10 @@
 Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned int *tris, size_t tsize);
 
 // Make a custom shader
-Shader makeShader(const char *vsource, const char *fsource);
+Shader makeShader(const char *vsource, const char *fsource, bool depth = true, bool add = false, bool face = true);
 
 // Make a texture
-Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels);
+Texture makeTexture(unsigned width, unsigned height, unsigned channels, const unsigned char *pixels);
 Texture makeTextureF(unsigned square, const float *pixels);
 
 // Make a frame buffer
