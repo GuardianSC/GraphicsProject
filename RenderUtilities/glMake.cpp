@@ -131,7 +131,7 @@ frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors)
 	/// Make/attach textures
 	for (int i = 0; i < nColors && i < 8; ++i)
 	{
-		retval.colors[i] = makeTexture(width, height, GL_RGBA, 0);
+		retval.colors[i] = makeTexture(width, height, 4, 0);
 		glFramebufferTexture(GL_FRAMEBUFFER, attachments[i], retval.colors[i].handle, 0);
 	}
 
@@ -139,4 +139,4 @@ frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return retval;
-}
+} 

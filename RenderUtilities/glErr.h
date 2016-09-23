@@ -6,10 +6,12 @@
 #ifdef _DEBUG
 #include <cstdio>
 #include <iostream>
-#define glog(detail, extra); \
-do\
-{\
-	printf("In %s at %s ib kine %d: %s, %s");\
+#define glog(detail, extra) \
+do{\
+	std::cout << "In " << __FILE__ << " at "   \
+			  << __FUNCTION__ << " on line "   \
+			  << __LINE__<< ": " << detail     \
+			  << ", " << extra << std::endl;   \
 }while(0)
 #else
 #define glog(detail, extra)

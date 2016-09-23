@@ -50,8 +50,10 @@ void main()
 
 		// Geometry pass
 		tdraw(gPass, soulspear, gFrame, model, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
-		tdraw(gPass, cube, gFrame, model, view, projection,
-			vertexNormals, vertexNormals, vertexNormals);
+
+		tdraw(gPass, cube, gFrame, model, view, projection, vertexNormals, vertexNormals, vertexNormals);
+		tdraw(gPass, quad, gFrame, glm::rotate(45.f, glm::vec3(0, -1, 0)) *
+			glm::translate(glm::vec3(0, 0, -2)) * glm::scale(glm::vec3(2, 2, 1)), view, projection, vertexNormals, vertexNormals, vertexNormals);
 
 		// Lighting pass
 		tdraw(lPass, quad, lFrame, view, projection, gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[2], gFrame.depth);

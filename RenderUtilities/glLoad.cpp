@@ -94,7 +94,7 @@ Texture loadTexture(const char *path)
 	int w, h, f;
 	unsigned char *p;
 
-	Texture retval = { 0,0,0,0 };
+	Texture retval = { 0, 0, 0, 0 };
 
 	stbi_set_flip_vertically_on_load(true); // DirectX or OpenGL
 	p = stbi_load(path, &w, &h, &f, STBI_default);
