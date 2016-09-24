@@ -25,9 +25,11 @@ void main()
 	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
 	Geometry cube = loadOBJ("../res/Models/cube.obj");
 
+	/// Soulspear textures
 	Texture soulspearNormal = loadTexture("../res/Textures/soulspear_normal.tga");
 	Texture soulspearDiffuse = loadTexture("../res/Textures/soulspear_diffuse.tga");
 	Texture soulspearSpecular = loadTexture("../res/Textures/soulspear_specular.tga");
+
 	const unsigned char normPixels[4] = { 127, 127, 255, 255 };
 	Texture vertexNormals = makeTexture(1, 1, 4, normPixels);
 
