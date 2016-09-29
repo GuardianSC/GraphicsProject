@@ -36,18 +36,19 @@ void main()
 	vec3 N = normalize(texture(normalMap, vUV).xyz);
 	vec4 P = texture(positionMap, vUV);
 
-	///// Shadow map calculations \\\\\
+	///// Shadow map calculations
 	// Space transformation
 	// view -> world -> light -> clip -> UV
 	vec4 sUV = clipToUV * lightProjection * lightView * inverse(view) * vec4(P.xyz, 1);
 
 	// Compare sampled Z value against projected Z position. If sample is closer, don't draw it in the shadow
-	if (texture(shadowMap, sUV.xy).r < sUV.z - shadowBias)   discard;
+	if (texture(shadowMap, sUV.xy).r < sUV.z - shadowBias)
+		discard;
 
 	// Phong calculations
 	vec3 R = reflect(L, N);
 	vec3 E = normalize(view[3].xyz + P.xyz);
-	float sP = 2;
+	float sP = 32.0f;
 
 	float lamb = max(0, -dot(L, N));
 	float spec = max(0, -dot(E, R));

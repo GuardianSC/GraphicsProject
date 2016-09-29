@@ -66,15 +66,13 @@ void main()
 		time += 0.016f;
 		spearModel = glm::rotate(time, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(0, -2, 0));
 
-		////////////// GEOMETRY PASS \\\\\\\\\\\\\\
+		////////////// GEOMETRY PASS \\\\\\\\\\\\\\\/
 		clearFramebuffer(gFrame);
 		tdraw(gPass, soulspear, gFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
-
 		tdraw(gPass, sphere, gFrame, sphereModel, view, projection, white, vertexNormals, white);
-
 		tdraw(gPass, quad, gFrame, quadModel, view, projection, white, vertexNormals, white);
 
-		////////////// LIGHTING PASS \\\\\\\\\\\\\\
+		////////////// LIGHTING PASS \\\\\\\\\\\\\\/
 
 		clearFramebuffer(lFrame);
 
@@ -88,8 +86,8 @@ void main()
 		/// Shadow Pre-Pass
 		clearFrameBuffer(sFrame);
 		tdraw(sPass, soulspear, sFrame, spearModel,  redView, lightProjection);
-		tdraw(sPass, sphere,	gFrame, sphereModel, redView, lightProjection);
-		tdraw(sPass, quad,		gFrame, quadModel,	 redView, lightProjection);
+		tdraw(sPass, sphere,	sFrame, sphereModel, redView, lightProjection);
+		tdraw(sPass, quad,		sFrame, quadModel,	 redView, lightProjection);
 		// Light Aggregation
 		tdraw(lPass, quad, lFrame, view,
 			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
@@ -97,14 +95,16 @@ void main()
 
 		/////// Green Light \\\\\\\
 		/// Shadow Pre-Pass
-		clearFrameBuffer(sFrame);
-		tdraw(sPass, soulspear, sFrame, spearModel, greenView, lightProjection);
-		tdraw(sPass, sphere, sFrame, sphereModel, greenView, lightProjection);
-		tdraw(sPass, quad, sFrame, quadModel, greenView, lightProjection);
-		// add the green light now.
-		tdraw(lPass, quad, lFrame, view,
-			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
-			sFrame.depth, greenColor, greenView, lightProjection);
+
+		// UNDELETE THIS
+		//clearFrameBuffer(sFrame);
+		//tdraw(sPass, soulspear, sFrame, spearModel, greenView, lightProjection);
+		//tdraw(sPass, sphere, sFrame, sphereModel, greenView, lightProjection);
+		//tdraw(sPass, quad, sFrame, quadModel, greenView, lightProjection);
+		//// add the green light now.
+		//tdraw(lPass, quad, lFrame, view,
+		//	gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
+		//	sFrame.depth, greenColor, greenView, lightProjection);
 
 		clearFrameBuffer(nFrame);
 
@@ -132,10 +132,9 @@ void main()
 			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
 		tdraw(post, quad, screen, lFrame.colors[1], mod);
 
-		mod =
-			glm::translate(glm::vec3(.75f, 0.25f, 0)) *
-			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
-		tdraw(post, quad, screen, lFrame.colors[2], mod);*/
+*/
+
+		tdraw(post, quad, screen, glm::mat4(), lFrame.colors[0]);
 	}
 	context.term();
 }

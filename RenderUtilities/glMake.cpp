@@ -73,11 +73,11 @@ Texture makeTexture(unsigned width, unsigned height, unsigned channels, const vo
 	GLenum iformat = isFloat ? GL_RGBA32F : eformat; // Internal format
 	switch (channels)
 	{
-		case 0: eformat = GL_DEPTH_COMPONENT; GL_RED; iformat = GL_DEPTH24_STENCIL8; break;
-		case 1: eformat = GL_RED; iformat = isFloat ? GL_R32F : eformat;   break;
-		case 2: eformat = GL_RG;   GL_RED; iformat = isFloat ? GL_RG32F : eformat;  break;
-		case 3: eformat = GL_RGB;  GL_RED; iformat = isFloat ? GL_RGB32F : eformat; break;
-		case 4: eformat = GL_RGBA; GL_RED; iformat = isFloat ? GL_RGBA32F : eformat; break;
+		case 0: eformat = GL_DEPTH_COMPONENT;	iformat = GL_DEPTH24_STENCIL8; break;
+		case 1: eformat = GL_RED;				iformat = isFloat ? GL_R32F : eformat;   break;
+		case 2: eformat = GL_RG;				iformat = isFloat ? GL_RG32F : eformat;  break;
+		case 3: eformat = GL_RGB;				iformat = isFloat ? GL_RGB32F : eformat; break;
+		case 4: eformat = GL_RGBA;				iformat = isFloat ? GL_RGBA32F : eformat; break;
 		default: glog("ERROR", "Channels must be 0-4");
 	}
 
@@ -90,7 +90,7 @@ Texture makeTexture(unsigned width, unsigned height, unsigned channels, const vo
 	glTexImage2D(GL_TEXTURE_2D, 0, iformat, width, height, 0, eformat, isFloat? GL_FLOAT : GL_UNSIGNED_BYTE, pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 

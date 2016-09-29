@@ -2,7 +2,7 @@
 
 in vec2 vUV;
 
-layout(location = 0) uniform sampler2D colorMap;
+layout(location = 1) uniform sampler2D colorMap;
 
 out vec4 outColor;
 
