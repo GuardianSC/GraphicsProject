@@ -116,6 +116,8 @@
     <None Include="gPassVert.glsl" />
     <None Include="lPassFrag.glsl" />
     <None Include="lPassVert.glsl" />
+    <None Include="lsPassFrag.glsl" />
+    <None Include="lsPassVert.glsl" />
     <None Include="phongFrag.glsl" />
     <None Include="phongVert.glsl" />
     <None Include="postFrag.glsl" />
@@ -124,6 +126,8 @@
     <None Include="quadVert.glsl" />
     <None Include="simpleFrag.glsl" />
     <None Include="simpleVert.glsl" />
+    <None Include="sPassFrag.glsl" />
+    <None Include="sPassVert.glsl" />
     <None Include="textureFrag.glsl" />
     <None Include="textureVert.glsl" />
   </ItemGroup>

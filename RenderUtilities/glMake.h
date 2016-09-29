@@ -8,8 +8,7 @@ struct Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const uns
 struct Shader makeShader(const char *vsource, const char *fsource, bool depth = true, bool add = false, bool face = true);
 
 // Make a texture
-struct Texture makeTexture(unsigned width, unsigned height, unsigned channels, const unsigned char *pixels);
-struct Texture makeTextureF(unsigned square, const float *pixels);
+struct Texture makeTexture(unsigned width, unsigned height, unsigned channels, const void *pixels, bool isFloat = false);
 
 // Make a frame buffer
-struct frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors);
+struct frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors, const bool *isFloat = nullptr, const int *channels = nullptr);

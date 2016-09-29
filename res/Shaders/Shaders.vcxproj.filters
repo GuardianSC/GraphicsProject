@@ -54,5 +54,17 @@
     <None Include="lPassVert.glsl">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="sPassVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="sPassFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="lsPassFrag.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="lsPassVert.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
