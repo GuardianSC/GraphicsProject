@@ -48,6 +48,7 @@ void main()
 
 	/// Camera matrices
 	glm::mat4 view = glm::lookAt(glm::vec3(0, 0, 4), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	//glm::mat4 view = glm::lookAt(glm::vec3(-5, 0, -5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 projection = glm::perspective(45.f, 1280.f / 720, 1.f, 100.f);
 
 	/// Light matrices/data
@@ -87,7 +88,7 @@ void main()
 		clearFrameBuffer(sFrame);
 		tdraw(sPass, soulspear, sFrame, spearModel,  redView, lightProjection);
 		tdraw(sPass, sphere,	sFrame, sphereModel, redView, lightProjection);
-		tdraw(sPass, quad,		sFrame, quadModel,	 redView, lightProjection);
+		tdraw(sPass, quad,		sFrame, quadModel,   redView, lightProjection);
 		// Light Aggregation
 		tdraw(lPass, quad, lFrame, view,
 			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
@@ -97,44 +98,48 @@ void main()
 		/// Shadow Pre-Pass
 
 		// UNDELETE THIS
-		//clearFrameBuffer(sFrame);
-		//tdraw(sPass, soulspear, sFrame, spearModel, greenView, lightProjection);
-		//tdraw(sPass, sphere, sFrame, sphereModel, greenView, lightProjection);
-		//tdraw(sPass, quad, sFrame, quadModel, greenView, lightProjection);
-		//// add the green light now.
-		//tdraw(lPass, quad, lFrame, view,
-		//	gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
-		//	sFrame.depth, greenColor, greenView, lightProjection);
+		clearFrameBuffer(sFrame);
+		tdraw(sPass, soulspear, sFrame, spearModel, greenView, lightProjection);
+		tdraw(sPass, sphere, sFrame, sphereModel, greenView, lightProjection);
+		tdraw(sPass, quad, sFrame, quadModel, greenView, lightProjection);
+		// add the green light now.
+		tdraw(lPass, quad, lFrame, view,
+			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
+			sFrame.depth, greenColor, greenView, lightProjection);
 
 		clearFrameBuffer(nFrame);
 
+		tdraw(post, quad, screen, glm::mat4(), lFrame.colors[0]);
+
 		// Debug Rendering Stuff.
-		/*for (int i = 0; i < 4; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			glm::mat4 mod =
 				glm::translate(glm::vec3(-.75f + .5*i, 0.75f, 0)) *
 				glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
-			tdraw(post, quad, screen, gFrame.colors[i], mod);
+			tdraw(post, quad, screen, mod, gFrame.colors[i]);
 		}
 
 		glm::mat4 mod =
 			glm::translate(glm::vec3(-.75f, 0.25f, 0)) *
 			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
-		tdraw(post, quad, screen, gFrame.depth, mod);
+		tdraw(post, quad, screen, mod, gFrame.depth);
 
 		mod =
 			glm::translate(glm::vec3(-.25f, 0.25f, 0)) *
 			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
-		tdraw(post, quad, screen, lFrame.colors[0], mod);
+		tdraw(post, quad, screen, mod, lFrame.colors[0]);
 
 		mod =
 			glm::translate(glm::vec3(.25f, 0.25f, 0)) *
 			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
-		tdraw(post, quad, screen, lFrame.colors[1], mod);
+		tdraw(post, quad, screen, mod, lFrame.colors[1]);
 
-*/
-
-		tdraw(post, quad, screen, glm::mat4(), lFrame.colors[0]);
+		mod =
+			glm::translate(glm::vec3(.75f, 0.25f, 0)) *
+			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
+		tdraw(post, quad, screen, mod, lFrame.colors[2]);
+		//
 	}
 	context.term();
 }

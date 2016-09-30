@@ -52,9 +52,14 @@ void main()
 
 	float lamb = max(0, -dot(L, N));
 	float spec = max(0, -dot(E, R));
-	if (spec > 0)   spec = pow(spec, sP);
+	if (spec > 0)
+	{
+		spec = pow(spec, sP);
+		//spec = 1.0f;
+	}
 
 	outAlbedo = texture(albedoMap,	   vUV) * lamb * lCol;
 	outSpecular = texture(specularMap, vUV) * spec * lCol;
+	//outColor = vec4(N,1.0f);//outAlbedo + outSpecular;
 	outColor = outAlbedo + outSpecular;
 }
