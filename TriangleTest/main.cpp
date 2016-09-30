@@ -4,7 +4,12 @@
 void main()
 {
 	Window context;
+	FlyCamera camera;
+	Input input;
+	Time time;
 	context.init(1350, 750);
+	time.init();
+	input.init(context);
 
 	frameBuffer screen = { 0, 1350, 750 };
 	bool isFtex[] = { false, true, false, true };
@@ -29,11 +34,23 @@ void main()
 	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
 	Geometry cube = loadOBJ("../res/Models/cube.obj");
 	Geometry sphere = loadOBJ("../res/Models/sphere.obj");
+	Geometry mP = loadOBJ("../res/metroidPrime/DolMetroidhead.obj");
 
 	/// Soulspear textures
 	Texture soulspearNormal = loadTexture("../res/Textures/soulspear_normal.tga");
 	Texture soulspearDiffuse = loadTexture("../res/Textures/soulspear_diffuse.tga");
 	Texture soulspearSpecular = loadTexture("../res/Textures/soulspear_specular.tga");
+
+	/// Metroid Prime textures
+	/*Texture mPBrain = loadTexture("../res/metroidPrime/blue_brain.png");
+	Texture mPBrainColor = loadTexture("../res/metroidPrime/blue_color01.png");
+	Texture mPCloud = loadTexture("../res/metroidPrime/cloud_darkblue01.png");
+	Texture mPGlow = loadTexture("../res/metroidPrime/glow06b.png");
+	Texture mPGlow0 = loadTexture("../res/metroidPrime/glow08.png");
+	Texture mPNoise = loadTexture("../res/metroidPrime/greybluenoise.png");
+	Texture mPNoise0 = loadTexture("../res/metroidPrime/noise02.png");
+	Texture mPVeins = loadTexture("../res/metroidPrime/vein_scroll01.png");*/
+	//Texture mPTexture = loadTexture("../res/metroidPrime/DolMetroidhead.mtl");
 
 	const unsigned char normPixels[4] = { 127, 127, 255, 255 };
 	Texture vertexNormals = makeTexture(1, 1, 4, normPixels);
@@ -45,6 +62,7 @@ void main()
 	glm::mat4 spearModel/* = glm::translate(glm::vec3(0, 0, 0))*/;
 	glm::mat4 sphereModel = glm::translate(glm::vec3(0.3f, -1, -0.2f));
 	glm::mat4 quadModel = glm::rotate(45.f, glm::vec3(0, -1, 0)) * glm::translate(glm::vec3(0, 0, -2)) * glm::scale(glm::vec3(2, 2, 1));
+	glm::mat4 mPModel/* = glm::translate(glm::vec3(0, 0, 0))*/;
 
 	/// Camera matrices
 	glm::mat4 view = glm::lookAt(glm::vec3(0, 0, 4), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
@@ -60,16 +78,28 @@ void main()
 	glm::mat4 greenView = glm::lookAt(glm::normalize(-glm::vec3(1, 1, -1)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::vec4 greenColor = glm::vec4(0, 1, 0, 1);
 
-	float time = 0;
+	float ct = 0;
+
+	camera.jumpTo(glm::vec3(2, 0, 0));
+	camera.lookAt(glm::vec3(0, -2, 0));
 
 	while (context.update())
 	{
-		time += 0.016f;
-		spearModel = glm::rotate(time, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(0, -2, 0));
+		time.update();
+		input.update();
+		ct += 0.016f;
+		spearModel = glm::rotate(ct, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(0, -2, 0));
+		mPModel = glm::rotate(ct, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(0, -2, 1));
+
+		view = camera.getView();
+		projection = camera.getProjection();
+		camera.update(input, time);
 
 		////////////// GEOMETRY PASS \\\\\\\\\\\\\\\/
 		clearFramebuffer(gFrame);
 		tdraw(gPass, soulspear, gFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
+		//tdraw(gPass, mP, gFrame, mPModel, view, projection, mPBrain, mPBrainColor, mPGlow, mPGlow0, mPNoise, mPNoise0, mPVeins);
+		tdraw(gPass, mP, gFrame, mPModel, view, projection);
 		tdraw(gPass, sphere, gFrame, sphereModel, view, projection, white, vertexNormals, white);
 		tdraw(gPass, quad, gFrame, quadModel, view, projection, white, vertexNormals, white);
 
@@ -87,6 +117,7 @@ void main()
 		/// Shadow Pre-Pass
 		clearFrameBuffer(sFrame);
 		tdraw(sPass, soulspear, sFrame, spearModel,  redView, lightProjection);
+		tdraw(sPass, mP,		sFrame, mPModel,	 redView, lightProjection);
 		tdraw(sPass, sphere,	sFrame, sphereModel, redView, lightProjection);
 		tdraw(sPass, quad,		sFrame, quadModel,   redView, lightProjection);
 		// Light Aggregation
@@ -96,12 +127,11 @@ void main()
 
 		/////// Green Light \\\\\\\
 		/// Shadow Pre-Pass
-
-		// UNDELETE THIS
 		clearFrameBuffer(sFrame);
-		tdraw(sPass, soulspear, sFrame, spearModel, greenView, lightProjection);
-		tdraw(sPass, sphere, sFrame, sphereModel, greenView, lightProjection);
-		tdraw(sPass, quad, sFrame, quadModel, greenView, lightProjection);
+		tdraw(sPass, soulspear, sFrame, spearModel,  greenView, lightProjection);
+		tdraw(sPass, mP,		sFrame, mPModel,	 greenView, lightProjection);
+		tdraw(sPass, sphere,	sFrame, sphereModel, greenView, lightProjection);
+		tdraw(sPass, quad,		sFrame, quadModel,	 greenView, lightProjection);
 		// add the green light now.
 		tdraw(lPass, quad, lFrame, view,
 			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
@@ -112,7 +142,7 @@ void main()
 		tdraw(post, quad, screen, glm::mat4(), lFrame.colors[0]);
 
 		// Debug Rendering Stuff.
-		for (int i = 0; i < 4; ++i)
+		/*for (int i = 0; i < 4; ++i)
 		{
 			glm::mat4 mod =
 				glm::translate(glm::vec3(-.75f + .5*i, 0.75f, 0)) *
@@ -138,8 +168,10 @@ void main()
 		mod =
 			glm::translate(glm::vec3(.75f, 0.25f, 0)) *
 			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
-		tdraw(post, quad, screen, mod, lFrame.colors[2]);
+		tdraw(post, quad, screen, mod, lFrame.colors[2]);*/
 		//
 	}
+	input.term();
+	time.term();
 	context.term();
 }

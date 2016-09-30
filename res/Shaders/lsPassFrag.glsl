@@ -15,7 +15,7 @@ layout(location = 5) uniform sampler2D shadowMap;
 uniform float shadowBias = 0.1f;
 
 // Light data
-layout(location = 6) uniform vec4 lCol;
+layout(location = 6) uniform vec4 lColor;
 layout(location = 7) uniform mat4 lightView; // the light direction = light forward
 layout(location = 8) uniform mat4 lightProjection;
 
@@ -42,24 +42,19 @@ void main()
 	vec4 sUV = clipToUV * lightProjection * lightView * inverse(view) * vec4(P.xyz, 1);
 
 	// Compare sampled Z value against projected Z position. If sample is closer, don't draw it in the shadow
-	if (texture(shadowMap, sUV.xy).r < sUV.z - shadowBias)
-		discard;
+	if (texture(shadowMap, sUV.xy).r < sUV.z - shadowBias)   discard;
 
 	// Phong calculations
 	vec3 R = reflect(L, N);
 	vec3 E = normalize(view[3].xyz + P.xyz);
-	float sP = 32.0f;
+	float sP = 0.50f;
 
 	float lamb = max(0, -dot(L, N));
 	float spec = max(0, -dot(E, R));
-	if (spec > 0)
-	{
-		spec = pow(spec, sP);
-		//spec = 1.0f;
-	}
+	if (spec > 0)   spec = pow(spec, sP);
 
-	outAlbedo = texture(albedoMap,	   vUV) * lamb * lCol;
-	outSpecular = texture(specularMap, vUV) * spec * lCol;
+	outAlbedo = texture(albedoMap,	   vUV) * lamb * lColor;
+	outSpecular = texture(specularMap, vUV) * spec * lColor;
 	//outColor = vec4(N,1.0f);//outAlbedo + outSpecular;
 	outColor = outAlbedo + outSpecular;
 }
