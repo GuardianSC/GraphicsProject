@@ -16,7 +16,7 @@ void main()
 	frameBuffer gFrame = makeFrameBuffer(1350, 750, 4, isFtex);
 	frameBuffer lFrame = makeFrameBuffer(1350, 750, 2);
 	frameBuffer nFrame = makeFrameBuffer(1350, 750, 1); /// Blur framebuffer
-	frameBuffer sFrame = makeFrameBuffer(1024, 1024, 0); /// temporary, cleared and reused by each light. Resolution can greatly affect quality
+	frameBuffer sFrame = makeFrameBuffer(1024, 1024, 0); /// Temporary, cleared and reused by each light. Resolution can greatly affect quality
 
 	Shader simple = loadShader("../res/Shaders/simpleVert.glsl", "../res/Shaders/simpleFrag.glsl");
 	Shader post = loadShader("../res/Shaders/quadVert.glsl", "../res/Shaders/quadFrag.glsl", false);
@@ -34,7 +34,6 @@ void main()
 	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
 	Geometry cube = loadOBJ("../res/Models/cube.obj");
 	Geometry sphere = loadOBJ("../res/Models/sphere.obj");
-	Geometry mP = loadOBJ("../res/metroidPrime/DolMetroidhead.obj");
 
 	/// Soulspear textures
 	Texture soulspearNormal = loadTexture("../res/Textures/soulspear_normal.tga");
@@ -42,15 +41,15 @@ void main()
 	Texture soulspearSpecular = loadTexture("../res/Textures/soulspear_specular.tga");
 
 	/// Metroid Prime textures
-	/*Texture mPBrain = loadTexture("../res/metroidPrime/blue_brain.png");
-	Texture mPBrainColor = loadTexture("../res/metroidPrime/blue_color01.png");
-	Texture mPCloud = loadTexture("../res/metroidPrime/cloud_darkblue01.png");
-	Texture mPGlow = loadTexture("../res/metroidPrime/glow06b.png");
-	Texture mPGlow0 = loadTexture("../res/metroidPrime/glow08.png");
-	Texture mPNoise = loadTexture("../res/metroidPrime/greybluenoise.png");
-	Texture mPNoise0 = loadTexture("../res/metroidPrime/noise02.png");
-	Texture mPVeins = loadTexture("../res/metroidPrime/vein_scroll01.png");*/
-	//Texture mPTexture = loadTexture("../res/metroidPrime/DolMetroidhead.mtl");
+	/*Texture mPBrain = loadTexture("../res/MetroidPrime/blue_brain.png");
+	Texture mPBrainColor = loadTexture("../res/MetroidPrime/blue_color01.png");
+	Texture mPCloud = loadTexture("../res/MetroidPrime/cloud_darkblue01.png");
+	Texture mPGlow = loadTexture("../res/MetroidPrime/glow06b.png");
+	Texture mPGlow0 = loadTexture("../res/MetroidPrime/glow08.png");
+	Texture mPNoise = loadTexture("../res/MetroidPrime/greybluenoise.png");
+	Texture mPNoise0 = loadTexture("../res/MetroidPrime/noise02.png");
+	Texture mPVeins = loadTexture("../res/MetroidPrime/vein_scroll01.png");
+	Texture mPTexture = loadTexture("../res/MetroidPrime/DolMetroidhead.mtl");*/
 
 	const unsigned char normPixels[4] = { 127, 127, 255, 255 };
 	Texture vertexNormals = makeTexture(1, 1, 4, normPixels);
@@ -60,9 +59,8 @@ void main()
 
 	/// Model matrices
 	glm::mat4 spearModel/* = glm::translate(glm::vec3(0, 0, 0))*/;
-	glm::mat4 sphereModel = glm::translate(glm::vec3(0.3f, -1, -0.2f));
-	glm::mat4 quadModel = glm::rotate(45.f, glm::vec3(0, -1, 0)) * glm::translate(glm::vec3(0, 0, -2)) * glm::scale(glm::vec3(2, 2, 1));
-	glm::mat4 mPModel/* = glm::translate(glm::vec3(0, 0, 0))*/;
+	glm::mat4 sphereModel = glm::translate(glm::vec3(0.3f, -1.25, -0.2f));
+	glm::mat4 quadModel = glm::rotate(45.f, glm::vec3(0, -1, 0)) * glm::translate(glm::vec3(0, 0, -2)) * glm::scale(glm::vec3(10, 10, 10));
 
 	/// Camera matrices
 	glm::mat4 view = glm::lookAt(glm::vec3(0, 0, 4), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
@@ -88,36 +86,27 @@ void main()
 		time.update();
 		input.update();
 		ct += 0.016f;
+
 		spearModel = glm::rotate(ct, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(0, -2, 0));
-		mPModel = glm::rotate(ct, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(0, -2, 1));
 
 		view = camera.getView();
 		projection = camera.getProjection();
 		camera.update(input, time);
 
-		////////////// GEOMETRY PASS \\\\\\\\\\\\\\\/
+		////////////// GEOMETRY PASS //////////////
 		clearFramebuffer(gFrame);
 		tdraw(gPass, soulspear, gFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
-		//tdraw(gPass, mP, gFrame, mPModel, view, projection, mPBrain, mPBrainColor, mPGlow, mPGlow0, mPNoise, mPNoise0, mPVeins);
-		tdraw(gPass, mP, gFrame, mPModel, view, projection);
 		tdraw(gPass, sphere, gFrame, sphereModel, view, projection, white, vertexNormals, white);
 		tdraw(gPass, quad, gFrame, quadModel, view, projection, white, vertexNormals, white);
 
-		////////////// LIGHTING PASS \\\\\\\\\\\\\\/
+		////////////// LIGHTING PASS //////////////
 
 		clearFramebuffer(lFrame);
 
-		/*tdraw(lPass, quad, lFrame, view, projection, gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[2], gFrame.depth);
-
-		tdraw(post, quad, screen, lFrame.colors[0]);
-
-		tdraw(blur, quad, nFrame, gFrame.colors[1]);*/
-
-		/////// Red Light \\\\\\\
+		////////////// Red Light //////////////
 		/// Shadow Pre-Pass
 		clearFrameBuffer(sFrame);
 		tdraw(sPass, soulspear, sFrame, spearModel,  redView, lightProjection);
-		tdraw(sPass, mP,		sFrame, mPModel,	 redView, lightProjection);
 		tdraw(sPass, sphere,	sFrame, sphereModel, redView, lightProjection);
 		tdraw(sPass, quad,		sFrame, quadModel,   redView, lightProjection);
 		// Light Aggregation
@@ -125,24 +114,24 @@ void main()
 			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
 			sFrame.depth, redColor, redView, lightProjection);
 
-		/////// Green Light \\\\\\\
+		////////////// Green Light //////////////
 		/// Shadow Pre-Pass
 		clearFrameBuffer(sFrame);
 		tdraw(sPass, soulspear, sFrame, spearModel,  greenView, lightProjection);
-		tdraw(sPass, mP,		sFrame, mPModel,	 greenView, lightProjection);
 		tdraw(sPass, sphere,	sFrame, sphereModel, greenView, lightProjection);
 		tdraw(sPass, quad,		sFrame, quadModel,	 greenView, lightProjection);
-		// add the green light now.
+		
 		tdraw(lPass, quad, lFrame, view,
 			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
 			sFrame.depth, greenColor, greenView, lightProjection);
 
 		clearFrameBuffer(nFrame);
 
+		/// Main screen/camera
 		tdraw(post, quad, screen, glm::mat4(), lFrame.colors[0]);
 
 		// Debug Rendering Stuff.
-		/*for (int i = 0; i < 4; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			glm::mat4 mod =
 				glm::translate(glm::vec3(-.75f + .5*i, 0.75f, 0)) *
@@ -150,7 +139,7 @@ void main()
 			tdraw(post, quad, screen, mod, gFrame.colors[i]);
 		}
 
-		glm::mat4 mod =
+		/*glm::mat4 mod =
 			glm::translate(glm::vec3(-.75f, 0.25f, 0)) *
 			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
 		tdraw(post, quad, screen, mod, gFrame.depth);
@@ -169,7 +158,7 @@ void main()
 			glm::translate(glm::vec3(.75f, 0.25f, 0)) *
 			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
 		tdraw(post, quad, screen, mod, lFrame.colors[2]);*/
-		//
+		
 	}
 	input.term();
 	time.term();

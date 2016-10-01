@@ -6,7 +6,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crenderutils.cpp" />
     <ClCompile Include="gallery.cpp" />
     <ClCompile Include="procGen.cpp" />
     <ClCompile Include="camera.cpp" />

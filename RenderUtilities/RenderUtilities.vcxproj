@@ -127,7 +127,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="crenderutils.cpp" />
     <ClCompile Include="glDraw.cpp" />
     <ClCompile Include="gallery.cpp" />
     <ClCompile Include="glFree.cpp" />

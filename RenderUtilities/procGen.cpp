@@ -70,4 +70,4 @@ Geometry genGrid(unsigned sqr, float dim)
 //	Texture retval = makeTexture(sqr, noise);
 //	delete[] noise;
 //	return retval;
-//}
+}
