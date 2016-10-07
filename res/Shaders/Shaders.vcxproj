@@ -110,8 +110,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="blurFrag.glsl" />
+    <None Include="blurVert.glsl" />
     <None Include="cameraFrag.glsl" />
     <None Include="cameraVert.glsl" />
+    <None Include="edgeFrag.glsl" />
+    <None Include="edgeVert.glsl" />
     <None Include="gPassFrag.glsl" />
     <None Include="gPassVert.glsl" />
     <None Include="lPassFrag.glsl" />

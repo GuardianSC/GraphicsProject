@@ -1,70 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Shader Files">
-      <UniqueIdentifier>{6d8d5ab4-7ee2-4551-ac13-2a80f7a408cc}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cameraFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="cameraVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="phongFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="phongVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="postFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="postVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="simpleFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="simpleVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="textureFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="textureVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="gPassFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="gPassVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="quadVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="quadFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="lPassFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="lPassVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="sPassVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="sPassFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="lsPassFrag.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="lsPassVert.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
+    <None Include="cameraFrag.glsl" />
+    <None Include="cameraVert.glsl" />
+    <None Include="gPassFrag.glsl" />
+    <None Include="gPassVert.glsl" />
+    <None Include="lPassFrag.glsl" />
+    <None Include="lPassVert.glsl" />
+    <None Include="lsPassFrag.glsl" />
+    <None Include="lsPassVert.glsl" />
+    <None Include="phongFrag.glsl" />
+    <None Include="phongVert.glsl" />
+    <None Include="postVert.glsl" />
+    <None Include="quadFrag.glsl" />
+    <None Include="quadVert.glsl" />
+    <None Include="simpleFrag.glsl" />
+    <None Include="simpleVert.glsl" />
+    <None Include="sPassFrag.glsl" />
+    <None Include="sPassVert.glsl" />
+    <None Include="textureFrag.glsl" />
+    <None Include="textureVert.glsl" />
+    <None Include="postFrag.glsl" />
+    <None Include="blurFrag.glsl" />
+    <None Include="blurVert.glsl" />
+    <None Include="edgeVert.glsl" />
+    <None Include="edgeFrag.glsl" />
   </ItemGroup>
 </Project>
