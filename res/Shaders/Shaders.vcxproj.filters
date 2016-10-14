@@ -21,9 +21,7 @@
     <None Include="textureFrag.glsl" />
     <None Include="textureVert.glsl" />
     <None Include="postFrag.glsl" />
-    <None Include="blurFrag.glsl" />
-    <None Include="blurVert.glsl" />
-    <None Include="edgeVert.glsl" />
-    <None Include="edgeFrag.glsl" />
+    <None Include="waterVert.glsl" />
+    <None Include="waterFrag.glsl" />
   </ItemGroup>
 </Project>

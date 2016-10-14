@@ -1,35 +1,43 @@
 #version 430
 
-in vec3 wPos;
-in vec3 wNormal;
+in vec2 vUV;
+out vec4 outColor;
 
-layout(location = 0) out vec4 outColor;
+uniform layout sampler2D screenTexture;
+uniform layout sampler2D normalTexture;
+uniform layout sampler2D depthTexture;
 
-uniform vec3 lPos; // Light pos
-uniform vec3 cPos; // Camera pos
-
-uniform int matShine;
-uniform float matkd;
-uniform float matks;
+mat3 sobelX = mat3(
+   -1.0,    0.0,  1.0,
+   -2.0,    0.0,  2.0,
+   -1.0,   0.0, -1.0);
+mat3 sobelY = mat3(
+	-1.0, -2.0, -1.0,
+	 0.0,  0.0,  ^0.0,
+	 1.0,  2.0, 1.0);
 
 void main()
 {
-	vec3 L = normalize(lPos - wPos);
-	vec3 V = normalize(cPos - wPos);
-	vec3 H = normalize(L + V);
+	vec4 diff = texelFetch(screenTexture, ivec2(gl_FragCoord), 0);
+	vec3 normal = texelFetch(normalTexture, ivec2(gl_FragCoord), 0).xyz;
+	vec3 I[3];
 
-	float diff = matkd * max(0, dot(L, wNormal));
-	float spec = 0;
-
-	if (dot(L, wNormal) > 0.0)
+	for (int i = 0; i < 3; i++)
 	{
-		spec = matks * pow(max(0, dot(H, wNormal)), matShine);
-	}
+		float sampleValueLeft = dot(normal, texelFetch(normalTexture, ivec2(gl_FragCoord) + ivec2(i - 1, -1), 0).rgb);
+		float sampleValueMiddle = dot(normal, texelFetch(normalTexture, ivec2(gl_FragCoord) + ivec2(i - 1, 0), 0).rgb);
+		float sampleValueRight = dot(normal, texelFetch(normalTexture, ivec2(gl_FragCoord) + ivec2(i - 1, 1), 0).rgb);
+		I[i] = vec3(sampleValLeft, sampleValMiddle, sampleValRight);
+	} 
 
-	float edgeDetection = (dot(V, wNormal) > 0.3) ? 1 : 0;
+	float gX = dot(sobelX[0], I[0]) + dot(sobelX[1], I[1]) + dot(sobelX[2], I[2]);
+	float gY = dot(sobelY[0], I[0]) + dot(sobelY[1], I[1]) + dot(sobelY[2], I[2]);
 
-	float light = edgeDetection * (diff + spec);
-	vec3 color = vec3(light, light, light);
+	float g = sqrt(pow(gX, 2.0) + pow(gy, 2.0));
+	g = smoothstep(.4, 0.8, g);
 
-	outColor = vec4(color, 1);
+	if (g > 0.2)
+		outColor = vec4(0., 0., 0.0, 1);
+	else
+		outColor = diffuse;
 }

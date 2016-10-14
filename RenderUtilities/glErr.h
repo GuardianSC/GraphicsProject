@@ -31,7 +31,6 @@ if (success == gL_FALSE)\
 }\
 }while(0)
 
-
 #define glog_glLinkProgram(shader) \
 do{\
 glLinkProgram(shader);\

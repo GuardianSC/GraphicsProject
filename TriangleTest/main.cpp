@@ -1,4 +1,5 @@
 #include "crenderutils.h"
+#include "procGen.h"
 #include "GLM\ext.hpp"
 
 void main()
@@ -14,35 +15,39 @@ void main()
 	frameBuffer screen = { 0, 1350, 750 };
 	bool isFtex[] = { false, true, false, true };
 	frameBuffer gFrame = makeFrameBuffer(1350, 750, 4, isFtex); /// Geometry framebuffer
-	frameBuffer lFrame = makeFrameBuffer(1350, 750, 2);
-	frameBuffer bFrame = makeFrameBuffer(1350, 750, 1); /// Blur framebuffer
+	frameBuffer lFrame = makeFrameBuffer(1350, 750, 2); /// Lighting framebuffer
+	frameBuffer pFrame = makeFrameBuffer(1350, 750, 1); /// Post process framebuffer
 	frameBuffer sFrame = makeFrameBuffer(1024, 1024, 0); /// Temporary, cleared and reused by each light. Resolution can greatly affect quality
 
-	Shader phong = loadShader("../res/Shaders/phongVert.glsl", "../res/Shaders/phongFrag.glsl");
-	Shader quadS = loadShader("../res/Shaders/quadVert.glsl", "../res/Shaders/quadFrag.glsl", false);
-	Shader post = loadShader("../res/Shaders/postVert.glsl", "../res/Shaders/postFrag.glsl", false);
-	Shader blur = loadShader("../res/Shaders/blurVert.glsl", "../res/Shaders/blurFrag.glsl");
+	//Shader phong = loadShader("../res/Shaders/phongVert.glsl", "../res/Shaders/phongFrag.glsl");
+	Shader quadS = loadShader("../res/Shaders/quadVert.glsl" , "../res/Shaders/quadFrag.glsl", false);
+	Shader post  = loadShader("../res/Shaders/postVert.glsl" , "../res/Shaders/postFrag.glsl", false);
 	/// Geometry pass
 	Shader gPass = loadShader("../res/Shaders/gPassVert.glsl", "../res/Shaders/gPassFrag.glsl");
 	/// Lighting pass
 	Shader lPass = loadShader("../res/Shaders/lsPassVert.glsl", "../res/Shaders/lsPassFrag.glsl", false, true);
 	/// Shadow pass
 	Shader sPass = loadShader("../res/Shaders/sPassVert.glsl", "../res/Shaders/sPassFrag.glsl", true, false, false);
-
 	
 	/// Objects
-	Geometry quad = makeGeometry(quadVerts, 4, quadTris, 6);
+	Geometry quad	   = makeGeometry(quadVerts, 4, quadTris, 6);
+	Geometry quadWater = makeGeometry(quadVerts, 4, quadTris, 6);
 	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
-	Geometry cube = loadOBJ("../res/Models/cube.obj");
-	Geometry sphere = loadOBJ("../res/Models/sphere.obj");
+	Geometry cube	   = loadOBJ("../res/Models/cube.obj");
+	Geometry sphere    = loadOBJ("../res/Models/sphere.obj");
+
+	/// Proc gen plane
+	//Geometry plane = genGrid(512, 2);
+	
 
 	/// Textures
-	Texture soulspearNormal = loadTexture("../res/Textures/soulspear_normal.tga");
-	Texture soulspearDiffuse = loadTexture("../res/Textures/soulspear_diffuse.tga");
+	Texture soulspearNormal   = loadTexture("../res/Textures/soulspear_normal.tga");
+	Texture soulspearDiffuse  = loadTexture("../res/Textures/soulspear_diffuse.tga");
 	Texture soulspearSpecular = loadTexture("../res/Textures/soulspear_specular.tga");
 
-	Texture wallTex = loadTexture("../res/Textures/30fps.png");
+	Texture wallTex   = loadTexture("../res/Textures/30fps.png");
 	Texture sphereTex = loadTexture("../res/Textures/sphere.jpg");
+	Texture waterTex =  loadTexture("../res/Textures/water.jpg");
 
 	const unsigned char normPixels[4] = { 127, 127, 255, 255 };
 	Texture vertexNormals = makeTexture(1, 1, 4, normPixels);
@@ -50,24 +55,30 @@ void main()
 	const unsigned char whitePixels[4] = { 255, 255, 255, 255 };
 	Texture white = makeTexture(1, 1, 4, whitePixels);
 
+	/// Proc gen noise
+	//Texture noise = genNoise(64, 8);
+
 	/// Model matrices
-	glm::mat4 spearModel/* = glm::translate(glm::vec3(0, 0, 0))*/;
-	glm::mat4 sphereModel = glm::translate(glm::vec3(0.3f, -1.25, -0.2f));
-	glm::mat4 quadModel = glm::rotate(45.f, glm::vec3(0, -1, 0)) * glm::translate(glm::vec3(0, 0, -2)) * glm::scale(glm::vec3(10, 10, 10));
+	glm::mat4 spearModel/*   = glm::translate(glm::vec3(0, 0, 0))*/;
+	glm::mat4 sphereModel    = glm::translate(glm::vec3(0.3f, -1.25, -0.2f));
+	glm::mat4 quadModel      = glm::rotate(45.f, glm::vec3(0, -1, 0)) * glm::translate(glm::vec3(0, 0, -5)) * glm::scale(glm::vec3(10, 10, 10));
+	glm::mat4 quadWaterModel = glm::rotate(33.f, glm::vec3(-1, 0, 0)) * glm::translate(glm::vec3(-5, 0, -5)) * glm::scale(glm::vec3(5, 5, 5));
+
 
 	/// Camera matrices
-	//glm::mat4 view = glm::lookAt(glm::vec3(0, 0, 4), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 view = glm::lookAt(glm::vec3(-5, 0, -5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 projection = glm::perspective(45.f, 1280.f / 720, 1.f, 100.f);
 
 	/// Light matrices/data
 	glm::mat4 lightProjection = glm::ortho<float>(-10, 10, -10, 10, -10, 10);
 
-	glm::mat4 redView = glm::lookAt(glm::normalize(-glm::vec3(1, -1, -1)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	glm::vec4 redColor = glm::vec4(1, 0, 0, 1);
+	glm::mat4 redView    = glm::lookAt(glm::normalize(-glm::vec3(1, -1, -1)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::vec4 redColor   = glm::vec4(1, 0, 0, 1);
+	glm::mat4 red1View = glm::lookAt(glm::normalize(-glm::vec3(0, 0, 0)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
-	glm::mat4 greenView = glm::lookAt(glm::normalize(-glm::vec3(1, -1, -1)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 greenView  = glm::lookAt(glm::normalize(-glm::vec3(1, -1, -1)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::vec4 greenColor = glm::vec4(0, 1, 0, 1);
+	glm::mat4 green1View = glm::lookAt(glm::normalize(-glm::vec3(0, 0, 0)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 	float ct = 0;
 
@@ -86,43 +97,54 @@ void main()
 		projection = camera.getProjection();
 		camera.update(input, time);
 
+#pragma region Geometry
 		////////////// GEOMETRY PASS //////////////
 		clearFramebuffer(gFrame);
-		tdraw(gPass, soulspear, gFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
-		tdraw(gPass, sphere, gFrame, sphereModel, view, projection, sphereTex, vertexNormals, white);
+		//tdraw(gPass, soulspear, gFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
+		//tdraw(gPass, sphere, gFrame, sphereModel, view, projection, sphereTex, vertexNormals, white);
 		tdraw(gPass, quad, gFrame, quadModel, view, projection, sphereTex, vertexNormals, white);
+		tdraw(gPass, quadWater, gFrame, quadWaterModel, view, projection, waterTex, vertexNormals, white);
+		//tdraw(texture, noise, gFrame, plane, view, projection, ct);
+		//tdraw(edge, soulspear, bFrame, spearModel, view, projection);
+#pragma endregion
 
+#pragma region Lighting/Shadow
 		////////////// LIGHTING PASS //////////////
-
 		clearFramebuffer(lFrame);
+		//tdraw(phong, soulspear, lFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
 
 		////////////// Red Light //////////////
 		/// Shadow Pre-Pass
 		clearFrameBuffer(sFrame);
 		tdraw(sPass, soulspear, sFrame, spearModel,  redView, lightProjection);
-		tdraw(sPass, sphere,	sFrame, sphereModel, redView, lightProjection);
+		//tdraw(sPass, sphere,	sFrame, sphereModel, redView, lightProjection);
 		tdraw(sPass, quad,		sFrame, quadModel,   redView, lightProjection);
 		// Light Aggregation
-		tdraw(lPass, quad, lFrame, view,
-			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
-			sFrame.depth, redColor, redView, lightProjection);
+		tdraw(lPass, quad, lFrame, view, gFrame.colors[0], gFrame.colors[1],
+			  gFrame.colors[2], gFrame.colors[3], sFrame.depth, redColor, redView, lightProjection);
+		tdraw(lPass, quad, lFrame, view, gFrame.colors[0], gFrame.colors[1],
+			gFrame.colors[2], gFrame.colors[3], sFrame.depth, redColor, red1View, lightProjection);
 
 		////////////// Green Light //////////////
 		/// Shadow Pre-Pass
 		clearFrameBuffer(sFrame);
 		tdraw(sPass, soulspear, sFrame, spearModel,  greenView, lightProjection);
-		tdraw(sPass, sphere,	sFrame, sphereModel, greenView, lightProjection);
+		//tdraw(sPass, sphere,	sFrame, sphereModel, greenView, lightProjection);
 		tdraw(sPass, quad,		sFrame, quadModel,	 greenView, lightProjection);
 		
-		tdraw(lPass, quad, lFrame, view,
-			gFrame.colors[0], gFrame.colors[1], gFrame.colors[2], gFrame.colors[3],
-			sFrame.depth, greenColor, greenView, lightProjection);
+		tdraw(lPass, quad, lFrame, view, gFrame.colors[0], 
+			  gFrame.colors[1], gFrame.colors[2], gFrame.colors[3], sFrame.depth, greenColor, greenView, lightProjection);
+		tdraw(lPass, quad, lFrame, view, gFrame.colors[0],
+			gFrame.colors[1], gFrame.colors[2], gFrame.colors[3], sFrame.depth, greenColor, green1View, lightProjection);
+#pragma endregion
 
-		clearFrameBuffer(bFrame);
-		//tdraw(blur, soulspear, bFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
-		//tdraw(blur, sphere, bFrame, sphereModel, view, projection, sphereTex, vertexNormals, white);
-		//tdraw(blur, quad, bFrame, quadModel, view, projection, wallTex, vertexNormals, white);
-
+#pragma region Post Process
+		////////////// POST PROCESS //////////////
+		clearFrameBuffer(pFrame);
+		tdraw(post, soulspear, pFrame, projection, view, spearModel);
+		//tdraw(blur, sphere, pFrame, sphereModel, view, projection, sphereTex, vertexNormals, white);
+		//tdraw(blur, quad, pFrame, quadModel, view, projection, wallTex, vertexNormals, white);
+#pragma endregion
 		/// Main screen/camera
 		tdraw(quadS, quad, screen, glm::mat4(), lFrame.colors[0]);
 

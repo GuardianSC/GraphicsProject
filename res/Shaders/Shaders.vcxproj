@@ -110,12 +110,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="blurFrag.glsl" />
-    <None Include="blurVert.glsl" />
     <None Include="cameraFrag.glsl" />
     <None Include="cameraVert.glsl" />
-    <None Include="edgeFrag.glsl" />
-    <None Include="edgeVert.glsl" />
     <None Include="gPassFrag.glsl" />
     <None Include="gPassVert.glsl" />
     <None Include="lPassFrag.glsl" />
@@ -134,6 +130,8 @@
     <None Include="sPassVert.glsl" />
     <None Include="textureFrag.glsl" />
     <None Include="textureVert.glsl" />
+    <None Include="waterFrag.glsl" />
+    <None Include="waterVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -58,7 +58,6 @@ Shader makeShader(const char *vsource, const char *fsource, bool depth, bool add
 	// link shaders to a  single program
 	glAttachShader(retval.handle, vs);
 	glAttachShader(retval.handle, fs);
-	//glLinkProgram(retval.handle);
 	glog_glLinkProgram(retval.handle);
 	// delete shaders
 	glDeleteShader(vs);
