@@ -1,5 +1,4 @@
 #include "crenderutils.h"
-#include "procGen.h"
 #include "GLM\ext.hpp"
 
 void main()
@@ -16,18 +15,21 @@ void main()
 	bool isFtex[] = { false, true, false, true };
 	frameBuffer gFrame = makeFrameBuffer(1350, 750, 4, isFtex); /// Geometry framebuffer
 	frameBuffer lFrame = makeFrameBuffer(1350, 750, 2); /// Lighting framebuffer
+	frameBuffer bFrame = makeFrameBuffer(1350, 750, 1); /// Bloom framebuffer
 	frameBuffer pFrame = makeFrameBuffer(1350, 750, 1); /// Post process framebuffer
 	frameBuffer sFrame = makeFrameBuffer(1024, 1024, 0); /// Temporary, cleared and reused by each light. Resolution can greatly affect quality
 
 	//Shader phong = loadShader("../res/Shaders/phongVert.glsl", "../res/Shaders/phongFrag.glsl");
 	Shader quadS = loadShader("../res/Shaders/quadVert.glsl" , "../res/Shaders/quadFrag.glsl", false);
-	Shader post  = loadShader("../res/Shaders/postVert.glsl" , "../res/Shaders/postFrag.glsl", false);
+	Shader post  = loadShader("../res/Shaders/postVert.glsl" , "../res/Shaders/postFrag.glsl");
 	/// Geometry pass
 	Shader gPass = loadShader("../res/Shaders/gPassVert.glsl", "../res/Shaders/gPassFrag.glsl");
 	/// Lighting pass
 	Shader lPass = loadShader("../res/Shaders/lsPassVert.glsl", "../res/Shaders/lsPassFrag.glsl", false, true);
 	/// Shadow pass
 	Shader sPass = loadShader("../res/Shaders/sPassVert.glsl", "../res/Shaders/sPassFrag.glsl", true, false, false);
+	// Bloom Pass
+	Shader bPass = loadShader("../res/Shaders/bPassVert.glsl", "../res/Shaders/bPassFrag.glsl", true, false, false);
 	
 	/// Objects
 	Geometry quad	   = makeGeometry(quadVerts, 4, quadTris, 6);
@@ -35,10 +37,6 @@ void main()
 	Geometry soulspear = loadOBJ("../res/Models/soulspear.obj");
 	Geometry cube	   = loadOBJ("../res/Models/cube.obj");
 	Geometry sphere    = loadOBJ("../res/Models/sphere.obj");
-
-	/// Proc gen plane
-	//Geometry plane = genGrid(512, 2);
-	
 
 	/// Textures
 	Texture soulspearNormal   = loadTexture("../res/Textures/soulspear_normal.tga");
@@ -54,9 +52,6 @@ void main()
 
 	const unsigned char whitePixels[4] = { 255, 255, 255, 255 };
 	Texture white = makeTexture(1, 1, 4, whitePixels);
-
-	/// Proc gen noise
-	//Texture noise = genNoise(64, 8);
 
 	/// Model matrices
 	glm::mat4 spearModel/*   = glm::translate(glm::vec3(0, 0, 0))*/;
@@ -80,6 +75,7 @@ void main()
 	glm::vec4 greenColor = glm::vec4(0, 1, 0, 1);
 	glm::mat4 green1View = glm::lookAt(glm::normalize(-glm::vec3(0, 0, 0)), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
+	/// Time
 	float ct = 0;
 
 	camera.jumpTo(glm::vec3(2, 0, 0));
@@ -100,15 +96,12 @@ void main()
 #pragma region Geometry
 		////////////// GEOMETRY PASS //////////////
 		clearFramebuffer(gFrame);
-		//tdraw(gPass, soulspear, gFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
+		tdraw(gPass, soulspear, gFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
 		//tdraw(gPass, sphere, gFrame, sphereModel, view, projection, sphereTex, vertexNormals, white);
 		tdraw(gPass, quad, gFrame, quadModel, view, projection, sphereTex, vertexNormals, white);
 		tdraw(gPass, quadWater, gFrame, quadWaterModel, view, projection, waterTex, vertexNormals, white);
-		//tdraw(texture, noise, gFrame, plane, view, projection, ct);
-		//tdraw(edge, soulspear, bFrame, spearModel, view, projection);
-#pragma endregion
 
-#pragma region Lighting/Shadow
+#pragma region Lighting&Shadow
 		////////////// LIGHTING PASS //////////////
 		clearFramebuffer(lFrame);
 		//tdraw(phong, soulspear, lFrame, spearModel, view, projection, soulspearDiffuse, soulspearNormal, soulspearSpecular);
@@ -138,15 +131,18 @@ void main()
 			gFrame.colors[1], gFrame.colors[2], gFrame.colors[3], sFrame.depth, greenColor, green1View, lightProjection);
 #pragma endregion
 
-#pragma region Post Process
+#pragma region Miscellaneous_Effects
 		////////////// POST PROCESS //////////////
 		clearFrameBuffer(pFrame);
-		tdraw(post, soulspear, pFrame, projection, view, spearModel);
-		//tdraw(blur, sphere, pFrame, sphereModel, view, projection, sphereTex, vertexNormals, white);
-		//tdraw(blur, quad, pFrame, quadModel, view, projection, wallTex, vertexNormals, white);
+		tdraw(post, quad, pFrame, gFrame.colors[0], lFrame.colors[0]);
+
+		////////////// BLOOM //////////////
+		clearFrameBuffer(bFrame);
+		tdraw(bPass, quad, bFrame, pFrame.colors[0], ct, lFrame.colors[1]);
 #pragma endregion
+
 		/// Main screen/camera
-		tdraw(quadS, quad, screen, glm::mat4(), lFrame.colors[0]);
+		tdraw(quadS, quad, screen, glm::mat4(), pFrame.colors[0]);
 
 		/// Debug Rendering Stuff.
 		for (int i = 0; i < 4; ++i)
@@ -154,8 +150,13 @@ void main()
 			glm::mat4 mod =
 				glm::translate(glm::vec3(-.75f + .5*i, 0.75f, 0)) *
 				glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
-			tdraw(quadS, quad, screen, mod, gFrame.colors[i]);
+			tdraw(quadS, quad, screen, mod, gFrame.colors[i]);// , pFrame.colors[0]);
 		}
+
+		glm::mat4 mod =
+			glm::translate(glm::vec3(-.75f, 0.25f, 0)) *
+			glm::scale(glm::vec3(0.25f, 0.25f, 1.f));
+		tdraw(quadS, quad, screen, mod, bFrame.colors[0]);
 
 		/*glm::mat4 mod =
 			glm::translate(glm::vec3(-.75f, 0.25f, 0)) *

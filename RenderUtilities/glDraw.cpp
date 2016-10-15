@@ -81,3 +81,10 @@ size_t tdraw_internal::tdraw_format(size_t idx, size_t tex, const Texture & val)
 	glUniform1i(idx, tex);
 	return 1;
 }
+
+size_t tdraw_internal::tdraw_format(size_t idx, size_t tex, const frameBuffer & val)
+{
+	for (int i = 0; i < val.nColors; ++i)
+		tdraw_internal::tdraw_format(idx, tex, val.colors[i]);
+	return 1;
+}

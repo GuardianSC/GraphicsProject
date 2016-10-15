@@ -16,7 +16,7 @@ namespace tdraw_internal
 	size_t tdraw_format(size_t idx, size_t tex, int   val);
 	size_t tdraw_format(size_t idx, size_t tex, float val);
 	size_t tdraw_format(size_t idx, size_t tex, const Texture &val);
-
+	size_t tdraw_format(size_t idx, size_t tex, const frameBuffer &val);
 
 	template<typename T, typename ...U>
 	void tdraw_unpack(size_t idx, size_t tex, T val, U &&...uniforms)
@@ -33,20 +33,20 @@ namespace tdraw_internal
 }
 
 template<typename ...U>
-void tdraw(const Shader &s, const Geometry &g, const frameBuffer &Framebuffer, U ... uniforms)
+void tdraw(const Shader &s, const Geometry &g, const frameBuffer &f, U ... uniforms)
 {
-	tdraw_internal::tdraw_begin(s, g, Framebuffer);
+	tdraw_internal::tdraw_begin(s, g, f);
 
-	// uniform location, texture slot location
+	/// uniform location, texture slot location
 	tdraw_internal::tdraw_unpack(0, 0, uniforms...);
 
-	tdraw_internal::tdraw_close(s, g, Framebuffer);
+	tdraw_internal::tdraw_close(s, g, f);
 }
 
 
 
-inline void tdraw(const Shader &s, const Geometry &g, const frameBuffer &Framebuffer)
+inline void tdraw(const Shader &s, const Geometry &g, const frameBuffer &f)
 {
-	tdraw_internal::tdraw_begin(s, g, Framebuffer);
-	tdraw_internal::tdraw_close(s, g, Framebuffer);
+	tdraw_internal::tdraw_begin(s, g, f);
+	tdraw_internal::tdraw_close(s, g, f);
 }
