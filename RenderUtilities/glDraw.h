@@ -3,12 +3,12 @@
 #include "GLM\fwd.hpp"
 #include <cstring>
 
-void clearFramebuffer(const frameBuffer &Framebuffer);
+void clearFramebuffer(const FrameBuffer &framebuffer);
 
 namespace tdraw_internal
 {
-	void tdraw_begin(const Shader &shader, const Geometry &g, const frameBuffer &Framebuffer);
-	void tdraw_close(const Shader &shader, const Geometry &g, const frameBuffer &Framebuffer);
+	void tdraw_begin(const Shader &shader, const Geometry &g, const FrameBuffer &framebuffer);
+	void tdraw_close(const Shader &shader, const Geometry &g, const FrameBuffer &framebuffer);
 
 	size_t tdraw_format(size_t idx, size_t tex, const glm::mat4 &val);
 	size_t tdraw_format(size_t idx, size_t tex, const glm::vec3 &val);
@@ -16,7 +16,7 @@ namespace tdraw_internal
 	size_t tdraw_format(size_t idx, size_t tex, int   val);
 	size_t tdraw_format(size_t idx, size_t tex, float val);
 	size_t tdraw_format(size_t idx, size_t tex, const Texture &val);
-	size_t tdraw_format(size_t idx, size_t tex, const frameBuffer &val);
+	size_t tdraw_format(size_t idx, size_t tex, const FrameBuffer &val);
 
 	template<typename T, typename ...U>
 	void tdraw_unpack(size_t idx, size_t tex, T val, U &&...uniforms)
@@ -33,7 +33,7 @@ namespace tdraw_internal
 }
 
 template<typename ...U>
-void tdraw(const Shader &s, const Geometry &g, const frameBuffer &f, U ... uniforms)
+void tdraw(const Shader &s, const Geometry &g, const FrameBuffer &f, U ... uniforms)
 {
 	tdraw_internal::tdraw_begin(s, g, f);
 
@@ -45,7 +45,7 @@ void tdraw(const Shader &s, const Geometry &g, const frameBuffer &f, U ... unifo
 
 
 
-inline void tdraw(const Shader &s, const Geometry &g, const frameBuffer &f)
+inline void tdraw(const Shader &s, const Geometry &g, const FrameBuffer &f)
 {
 	tdraw_internal::tdraw_begin(s, g, f);
 	tdraw_internal::tdraw_close(s, g, f);

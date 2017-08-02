@@ -4,9 +4,9 @@
 #include "GLM\glm.hpp"
 #include "GLM\ext.hpp"
 
-void clearFramebuffer(const frameBuffer &Framebuffer)
+void clearFramebuffer(const FrameBuffer &framebuffer)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, Framebuffer.handle);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.handle);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -25,17 +25,17 @@ void useShaderFlags(const Shader &shader)
 
 }
 
-void tdraw_internal::tdraw_begin(const Shader & shader, const Geometry & g, const frameBuffer &Framebuffer)
+void tdraw_internal::tdraw_begin(const Shader & shader, const Geometry & g, const FrameBuffer &framebuffer)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, Framebuffer.handle);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.handle);
 	glUseProgram(shader.handle);
 	glBindVertexArray(g.vao);
 	useShaderFlags(shader);
-	glViewport(0, 0, Framebuffer.width, Framebuffer.height);
+	glViewport(0, 0, framebuffer.width, framebuffer.height);
 }
 
 
-void tdraw_internal::tdraw_close(const Shader & shader, const Geometry & g, const frameBuffer &Framebuffer)
+void tdraw_internal::tdraw_close(const Shader & shader, const Geometry & g, const FrameBuffer &framebuffer)
 {
 	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
 
@@ -82,7 +82,7 @@ size_t tdraw_internal::tdraw_format(size_t idx, size_t tex, const Texture & val)
 	return 1;
 }
 
-size_t tdraw_internal::tdraw_format(size_t idx, size_t tex, const frameBuffer & val)
+size_t tdraw_internal::tdraw_format(size_t idx, size_t tex, const FrameBuffer & val)
 {
 	for (int i = 0; i < val.nColors; ++i)
 		tdraw_internal::tdraw_format(idx, tex, val.colors[i]);

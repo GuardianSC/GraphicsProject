@@ -115,10 +115,10 @@ Texture makeTextureF(unsigned square, const float * pixels)
 	return retval;
 }
 
-frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors, const bool *isFloat, const int *channels)
+FrameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors, const bool *isFloat, const int *channels)
 {
 	// handle, width, height, colors[8]
-	frameBuffer retval = { 0, width, height, nColors };
+	FrameBuffer retval = { 0, width, height, nColors };
 
 	glGenFramebuffers(1, &retval.handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, retval.handle);

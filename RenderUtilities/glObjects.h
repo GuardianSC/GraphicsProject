@@ -22,7 +22,7 @@ struct Texture
 	unsigned width, height, format;
 };
 
-struct frameBuffer
+struct FrameBuffer
 {
 	unsigned handle;
 	unsigned width, height, nColors;

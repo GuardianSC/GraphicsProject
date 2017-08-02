@@ -1,3 +1,4 @@
+// Edge detection attempt
 #version 430
 
 out vec4 outColor;

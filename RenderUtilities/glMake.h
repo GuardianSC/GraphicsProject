@@ -13,4 +13,4 @@ struct Texture makeTexture(unsigned width, unsigned height, unsigned channels, c
 struct Texture makeTextureF(unsigned square, const float * pixels);
 
 // Make a frame buffer
-struct frameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors, const bool *isFloat = nullptr, const int *channels = nullptr);
+struct FrameBuffer makeFrameBuffer(unsigned width, unsigned height, unsigned nColors, const bool *isFloat = nullptr, const int *channels = nullptr);

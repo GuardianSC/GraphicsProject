@@ -22,7 +22,7 @@ void freeTexture(Texture &texture)
 	texture = { 0, 0, 0, 0 };
 }
 
-void freeFrameBuffer(frameBuffer &fb)
+void freeFrameBuffer(FrameBuffer &fb)
 {
 	for (unsigned i = 0; i < fb.nColors; i++)
 		freeTexture(fb.colors[i]);
@@ -31,7 +31,7 @@ void freeFrameBuffer(frameBuffer &fb)
 	fb = { 0, 0, 0, 0 };
 }
 
-void clearFrameBuffer(frameBuffer &fb)
+void clearFrameBuffer(FrameBuffer &fb)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, fb.handle);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
