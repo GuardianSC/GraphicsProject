@@ -82,6 +82,7 @@ void main()
 	camera.jumpTo(glm::vec3(2, 0, 0));
 	camera.lookAt(glm::vec3(0, -2, 0));
 
+	// Game loop
 	while (context.update())
 	{
 		time.update();
