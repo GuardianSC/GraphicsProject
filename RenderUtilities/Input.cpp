@@ -4,7 +4,7 @@
 #include <cstring>
 #include <cstdio>
 
-bool Input::init(const class Window &window)
+bool Input::Init(const class Window &window)
 {
 	memset(keys, 0, sizeof(keys));
 	winHandle = window.winHandle;
@@ -18,7 +18,7 @@ bool Input::init(const class Window &window)
 	return true;
 }
 
-bool Input::update()
+bool Input::Update()
 {
 	for (int i = 0; i < 350; ++i)
 	{
@@ -53,7 +53,7 @@ bool Input::update()
 	return true;
 }
 
-bool Input::term()
+bool Input::Term()
 {
 	return true;
 }

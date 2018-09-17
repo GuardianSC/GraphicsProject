@@ -1,14 +1,14 @@
 #include "GLFW\glfw3.h"
 #include "timer.h"
 
-bool Time::init()
+bool Time::Init()
 {
 	glfwSetTime(0);
 	deltaTime = currentTime = previousTime = 0;
 	return true;
 }
 
-bool Time::update()
+bool Time::Update()
 {
 	previousTime = currentTime;
 	currentTime = getrealTime();
@@ -16,7 +16,7 @@ bool Time::update()
 	return false;
 }
 
-bool Time::term()
+bool Time::Term()
 {
 	return true;
 }

@@ -1,5 +1,7 @@
 #pragma once
-#include <gl\GL.h>
+#include "GLM\ext.hpp"
+//#include <gl\GL.h>
+#include "GLEW\glew.h"
 struct Geometry
 {
 	// Vertex Buffer Object : an array of vertices
@@ -24,8 +26,10 @@ struct Texture
 
 struct Particle
 {
-	glm::vec2 position, velocity;
+	glm::vec2 position;
+	glm::vec2 velocity;
 	glm::vec4 color;
+	
 	GLfloat life;
 
 	Particle() : position(0.0f), velocity(0.0f), color(1.0f), life(0.0f) { }

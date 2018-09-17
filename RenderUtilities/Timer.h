@@ -6,9 +6,9 @@ class Time
 	float previousTime;
 	float deltaTime;
 public:
-	bool init();
-	bool update();
-	bool term();
+	bool Init();
+	bool Update();
+	bool Term();
 
 	float getDeltaTime() const; // Fixed to start of frame
 	float getTotalTime() const; // Fixed to start of frame

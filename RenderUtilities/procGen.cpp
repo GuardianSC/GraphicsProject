@@ -4,7 +4,7 @@
 #include "GLM\glm.hpp"
 #include "GLM\gtc\noise.hpp"
 
-Geometry genGrid(unsigned sqr, float dim)
+Geometry GenGrid(unsigned sqr, float dim)
 {
 	unsigned  vsize = sqr*sqr;
 	unsigned  tsize = (sqr - 1)*(sqr - 1) * 6;
@@ -46,7 +46,7 @@ Geometry genGrid(unsigned sqr, float dim)
 	return retval;
 }
 
-Texture genNoise(unsigned sqr, unsigned octaves)
+Texture GenNoise(unsigned sqr, unsigned octaves)
 {
 	float *noise = new float[sqr*sqr]; // float[sqr][sqr]
 	float  scale = 1.0f / sqr * 3.f;

@@ -20,7 +20,7 @@ void APIENTRY GL_errorCallback(GLenum source, GLenum type, GLuint id, GLenum sev
 
 #endif
 
-bool Window::init(int a_width, int a_height, char * a_title)
+bool Window::Init(int a_width, int a_height, char * a_title)
 {
 	width = a_width;
 	height = a_height;
@@ -46,7 +46,7 @@ bool Window::init(int a_width, int a_height, char * a_title)
 	return true; 
 }
 
-bool Window::update()
+bool Window::Update()
 {
 	if (!isInitialized) return false;
 	
@@ -58,7 +58,7 @@ bool Window::update()
 	return !glfwWindowShouldClose(winHandle);
 }
 
-bool Window::term()
+bool Window::Term()
 {
 	glfwDestroyWindow(winHandle);
 	glfwTerminate();

@@ -25,5 +25,7 @@
     <None Include="waterFrag.glsl" />
     <None Include="bPassFrag.glsl" />
     <None Include="bPassVert.glsl" />
+    <None Include="particleVert.glsl" />
+    <None Include="particleFrag.glsl" />
   </ItemGroup>
 </Project>

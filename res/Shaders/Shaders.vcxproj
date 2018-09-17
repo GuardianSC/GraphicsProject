@@ -120,6 +120,8 @@
     <None Include="lPassVert.glsl" />
     <None Include="lsPassFrag.glsl" />
     <None Include="lsPassVert.glsl" />
+    <None Include="particleFrag.glsl" />
+    <None Include="particleVert.glsl" />
     <None Include="phongFrag.glsl" />
     <None Include="phongVert.glsl" />
     <None Include="postFrag.glsl" />

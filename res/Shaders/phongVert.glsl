@@ -17,6 +17,5 @@ void main()
 	vNormal = (model * normal).xyz;
 	UV = texCoord;
 	vPosition = normalize(model * position).xyz;
-
 	gl_Position = projection * view * model * position;
 }

@@ -38,7 +38,7 @@ mat3 cotangent_frame(in vec3 N, in vec3 p, in vec2 uv)
 	vec3 dp2perp = cross(dp2, N); // determine right
 	vec3 dp1perp = cross(N, dp1); // determine up
 
-								  // roll the right to line up with the texture's tangent
+	// roll the right to line up with the texture's tangent
 	vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
 	vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
 

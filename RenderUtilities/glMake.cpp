@@ -13,12 +13,12 @@ Geometry makeGeometry(const Vertex * verts, size_t vsize,
 	glGenBuffers(1, &retval.ibo);	   // Store indices
 	glGenVertexArrays(1, &retval.vao); // Store attribute information
 
-									   // Scope the variables
+	// Scope the variables
 	glBindVertexArray(retval.vao);
 	glBindBuffer(GL_ARRAY_BUFFER, retval.vbo); // scope our vertices
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, retval.ibo); // triangle is scoped
 
-													   // Initialize the variables
+	// Initialize the variables
 	glBufferData(GL_ARRAY_BUFFER, vsize * sizeof(Vertex), verts, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, tsize * sizeof(unsigned), tris, GL_STATIC_DRAW);
 
